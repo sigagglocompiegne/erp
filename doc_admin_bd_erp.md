@@ -226,3 +226,27 @@ Particularité(s) à noter :
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence.
 * Une clé étrangère existe sur la table de valeur `lt_erp_objet_media_doctyp_fkey` (lien vers la liste de valeurs sur le type de documents `lt_erp_objet_media_doctyp`)
+
+---
+
+#### Liste de valeurs
+
+`[m_erp_stage].[lt_spanc_confor]` : Liste de valeurs des conformités des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|Défavorable|
+|20|Sursis à statuer|
+|30|Favorable|
+|11|Favorable avec prescription|
