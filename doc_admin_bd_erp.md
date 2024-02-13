@@ -507,3 +507,20 @@ Valeurs possibles :
 |:---|:---|
 |00|Non renseigné|
 |99|Autre|
+
+### Classes d'objets attributaire gérant les associations (ou relation d'appartenance des objets entre eux) :
+
+`[m_erp_stage].[lk_erp_localisation]` : table alphanumérique de relation entre les ERP et leurs localisations
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+|:---|:---|:---|:---|
+|id|Identifiant interne non signifiant|bigint|nextval('lk_spanc_contact_seq'::regclass)|
+|idinstal|Identifiant de l'installation|bigint| |
+|idcontact|Identifiant interne du contact|bigint| |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
+
+* 1 triggers :
+  * `t_t1_100` : trigger permettant d'insérer toutes les modifications dans la table des logs
