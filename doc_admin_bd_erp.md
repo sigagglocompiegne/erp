@@ -231,7 +231,7 @@ Particularité(s) à noter :
 
 #### Liste de valeurs
 
-`[m_erp_stage].[lt_spanc_confor]` : Liste de valeurs des conformités des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_ctrl_avis]` : Liste de valeurs des conformités des contrôles d'accessibilité et de sécurité
 
 |Nom attribut | Définition |
 |:---|:---|
@@ -250,3 +250,260 @@ Valeurs possibles :
 |20|Sursis à statuer|
 |30|Favorable|
 |11|Favorable avec prescription|
+
+---
+
+`[m_erp_stage].[lt_erp_controle_commission]` : Liste de valeurs des commissions des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|S.C.D.S.|
+|20|Commission communale Compiègne|
+
+---
+
+`[m_erp_stage].[lt_erp_controle_expert]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|SDIS|
+|20|Préfécture|
+|99|Autre|
+
+---
+
+`[m_erp_stage].[lt_erp_controle_expert]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|Visite périodique|
+|11|Visite de conformité|
+|12|Visite inopinée|
+|13|Visite d'ouverture|
+|20|Réception de travaux|
+|99|Autre|
+
+---
+
+`[m_erp_stage].[lt_erp_ctrl_media_doctyp]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|01|Avis du SDIS|
+|02|Avis de la préfecture|
+|03|Arrété|
+|99|Autre|
+
+---
+
+`[m_erp_stage].[lt_erp_exploitant_civilite]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|11|Monsieur|
+|12|Madame|
+|20|Madame & Monsieur|
+|21|Monsieur & Monsieur|
+|22|Madame & Madame|
+|30|Mesdames & Messieurs|
+|99|Autre|
+
+---
+
+`[m_erp_stage].[lt_erp_gestion]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|Opérateur public|
+|20|Entreprise privée|
+
+---
+
+`[m_erp_stage].[lt_erp_groupement]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|ERP indépendant|
+|20|Membre d'un groupement|
+|30|Maitre d'un groupement|
+
+---
+
+`[m_erp_stage].[lt_erp_objet_cat]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|1|
+|20|2|
+|30|3|
+|40|4|
+|50|5|
+
+---
+
+`[m_erp_stage].[lt_erp_objet_erptype]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|J|Structures d'accueil pour personnes âgées et personnes handicapées|
+|L|Salles d auditions, de conférences, de réunions, de spectacles ou polyvalentes|
+|M|Magasins de vente, centres commerciaux|
+|N|Restaurants et débits de boissons|
+|O|Hôtels et pensions de famille|
+|P|Salles de danses et salles de jeux|
+|R|Établissements d'éveil, d'enseignement, de formation, centres de vacances, centres de loisirs sans hébergement|
+|S|Bibliothèques, centres de documentation|
+|T|Salles d expositions|
+|U|Établissements sanitaires|
+|V|Établissement de culte|
+|W|Administrations, banques, bureaux|
+|X|Établissements sportifs couverts|
+|Y|Musées|
+|EF|Établissements flottants|
+|GA|Gares|
+|PA|Établissements de plein air|
+|PS|Parcs de stationnement couverts|
+|SG|Structure gonflable|
+|CTS|Chapiteaux, tentes et structures|
+|OA|Hôtels-restaurants d altitude|
+|REF|Refuges de montagne|
+|ZZ|Non concerné|
+
+---
+
+`[m_erp_stage].[lt_erp_objet_etat]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|Ouvert|
+|20|Fermé temporairement|
+|30|Fermé|
+
+---
+
+`[m_erp_stage].[lt_erp_objet_media_doctyp]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+
+|Nom attribut | Définition |
+|:---|:---|
+|code|Code des conformités des contrôles|character varying(2)| |
+|valeur|Valeur des conformités de conclusion des contrôles|text| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|99|Autre|
