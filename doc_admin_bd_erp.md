@@ -544,7 +544,7 @@ Particularité(s) à noter :
 ### classes d'objets applicatives métiers (vue) :
 
   * xapps_an_v_erp_contsecu_periode : Vue matérialisée applicative calculant les dates des prochains contrôles à partir des derniers contrôles en fonction de leur nature et de leur conclusion de chaque ERP ouvert (rafraichie après chaque insertion ou mise à jour d'un contrôle)
-  * xapps_geo_vmr_erp : Vue applicative générant les exports des contrôles
+  * xapps_geo_vmr_erp : Vue affichant les ERP saisis (pas de gestion) (à supprimer à la production, remplacé par xapps_geo_vmr_erp_gb)
   * xapps_geo_vmr_erp_adresse : vue matérialisée récupérant toutes les adresses de Compiègne avec le nombre d'ERP présent
   * xapps_geo_vmr_erp_gb : Vue affichant les ERP à l''adresse ou temporaire en présentant le nombre et le dernier état du contrôle de l''ensemble des ERP rpésents (l''état le plus mauvais qui s''affiche
  
