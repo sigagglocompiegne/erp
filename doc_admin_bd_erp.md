@@ -543,7 +543,7 @@ Particularité(s) à noter :
 
 ### classes d'objets applicatives métiers (vue) :
 
-  * xapps_an_v_erp_contsecu_periode : Vue applicative formattant l'affichage des derniers contrôles à l'installation (soit le diag initial ou la demande de travaux et le dernier contrôle)
+  * xapps_an_v_erp_contsecu_periode : Vue matérialisée applicative calculant les dates des prochains contrôles à partir des derniers contrôles en fonction de leur nature et de leur conclusion de chaque ERP ouvert (rafraichie après chaque insertion ou mise à jour d'un contrôle)
   * xapps_geo_vmr_erp : Vue applicative générant les exports des contrôles
   * xapps_geo_vmr_erp_adresse : Vue applicative générant les exports des installations
   * xapps_geo_vmr_erp_gb : Vue applicative ressortant les indicateurs RPQS pour le tableau de bord n°1 du SPANC
