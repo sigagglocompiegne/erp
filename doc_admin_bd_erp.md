@@ -29,7 +29,7 @@ Cette base de données est dépendante de la Base Adresse Locale.
 
 ## Classes d'objets partagé et primitive graphique
 
-`[m_erp_stage].[xapps_geo_vmr_erp]` : vue matérialisée géographique partagé avec la Base Adresse Locale permettant l'affichage et le fonctionnel au clic dans l'application. Cette vue remonte pour chaque adresse le nombre d'ERP ouverts et la conformité du dernier contrôle.
+`[m_erp_stage].[xapps_geo_vmr_erp]` : vue matérialisée géographique partagé avec la Base Adresse Locale permettant l'affichage et le fonctionnel au clic dans l'application. Cette vue remonte pour chaque adresse le nombre d'ERP ouverts et la conformité globale en fonction des derniers contrôles de sécurité et d'accessibilité.
 
 |Nom attribut | Définition | Type | Valeurs par défaut |
 |:---|:---|:---|:---|
@@ -112,7 +112,8 @@ Particularité(s) à noter :
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
-* Une clé étrangère existe sur la table de valeur `lt_erp_controle_commission_fkey` (lien vers la liste de valeurs des conclusions du contrôle `lt_erp_controle_commission`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_controle_commission_fkey` (lien vers la liste de valeurs des commissions `lt_erp_controle_commission`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_controle_expert_fkey` (lien vers la liste de valeurs des experts `lt_erp_controle_expert`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_controle_avis_exp_fkey` (lien vers la liste de valeurs des conformités `lt_erp_controle_avis`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_controle_avis_com_fkey` (lien vers la liste de valeurs des conformités `lt_erp_controle_avis`)
 
@@ -144,7 +145,8 @@ Particularité(s) à noter :
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
-* Une clé étrangère existe sur la table de valeur `lt_erp_controle_commission_fkey` (lien vers la liste de valeurs des conclusions du contrôle `lt_erp_controle_commission`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_controle_commission_fkey` (lien vers la liste de valeurs des commissions  `lt_erp_controle_commission`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_controle_expert_fkey` (lien vers la liste de valeurs des experts `lt_erp_controle_expert`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_controle_avis_exp_fkey` (lien vers la liste de valeurs des conformités `lt_erp_controle_avis`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_controle_avis_com_fkey` (lien vers la liste de valeurs des conformités `lt_erp_controle_avis`)
 
@@ -166,7 +168,7 @@ Particularité(s) à noter :
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `idexploit` l'attribution automatique de la référence unique s'effectue via une séquence. 
-* Une clé étrangère existe sur la table de valeur `lt_erp_exploitant_civilite_fkey` (lien vers la liste de valeurs des conclusions du contrôle `lt_erp_exploitant_civilite`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_exploitant_civilite_fkey` (lien vers la liste de valeurs des civilités  `lt_erp_exploitant_civilite`)
 
   ---
 
@@ -229,6 +231,21 @@ Particularité(s) à noter :
 
 ---
 
+`[m_erp_stage].[geo_erp_point_utilisateur]` : table géographique contenant les points créés par les utilisateurs
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+|:---|:---|:---|:---|
+|idobjet|Identifiant de la localisation utilisateur|bigint|nextval('m_erp_stage.an_erp_objet_seq'::regclass)|
+|x_l93|Coordonnées X en lambert 93|numeric| |
+|y_l93|Coordonnées Y en lambert 93|numeric| |
+|insee|Horodatage de la dernière mise à jour de la donnée dans la base|character varying(5)| |
+|commune|Code insee de la commune|character varying(80)| |
+|indications|Compléments de localisation|character varying(1000)| |
+|geom|Géométrie du point|USER-DEFINED| |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idobjet` l'attribution automatique de la référence unique s'effectue via une séquence.
+
 #### Liste de valeurs
 
 `[m_erp_stage].[lt_erp_ctrl_avis]` : Liste de valeurs des conformités des contrôles d'accessibilité et de sécurité
@@ -257,8 +274,8 @@ Valeurs possibles :
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types de commission des contrôles|character varying(2)| |
+|valeur|Valeur des types de commission des contrôles|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -277,8 +294,8 @@ Valeurs possibles :
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des experts participant aux contrôles|character varying(2)| |
+|valeur|Valeur des experts participant aux contrôles|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -294,12 +311,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_controle_expert]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_controle_type_visite]` : Liste de valeurs des types de visite des contrôles d'accessibilité et de sécurité
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types de visite|character varying(2)| |
+|valeur|Valeur des types de visite|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -318,12 +335,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_ctrl_media_doctyp]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_ctrl_media_doctyp]` : Liste de valeurs des types de média des contrôles d'accessibilité et de sécurité
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types de média des contrôles d'accessibilité et de sécurité|character varying(2)| |
+|valeur|Valeur des types de média des contrôles d'accessibilité et de sécurité|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -340,12 +357,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_exploitant_civilite]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_exploitant_civilite]` : Liste de valeurs des civilités
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des civilités|character varying(2)| |
+|valeur|Valeur des civilités|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -365,12 +382,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_gestion]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_gestion]` : Liste de valeurs des types de gestion des ERP
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types de gestion des ERP|character varying(2)| |
+|valeur|Valeur des types de gestion des ERP|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -385,12 +402,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_groupement]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_groupement]` : Liste de valeurs des types de groupement des ERP
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types de groupement des ERP|character varying(2)| |
+|valeur|Valeur des types de groupement des ERP|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -406,12 +423,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_objet_cat]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_objet_cat]` : Liste de valeurs des catégories des ERP
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des catégories des ERP|character varying(2)| |
+|valeur|Valeur des catégories des ERP|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -429,12 +446,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_objet_erptype]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_objet_erptype]` : Liste de valeurs des types des ERP
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types des ERP|character varying(2)| |
+|valeur|Valeur des types des ERP|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -470,12 +487,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_objet_etat]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_objet_etat]` : Liste de valeurs des etats des ERP
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des etats des ERP|character varying(2)| |
+|valeur|Valeur des etats des ERP|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -491,12 +508,12 @@ Valeurs possibles :
 
 ---
 
-`[m_erp_stage].[lt_erp_objet_media_doctyp]` : Liste de valeurs des experts des contrôles d'accessibilité et de sécurité
+`[m_erp_stage].[lt_erp_objet_media_doctyp]` : Liste de valeurs des types de média des ERP
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+|code|Code des types de média des ERP|character varying(2)| |
+|valeur|Valeur des types de média des ERP|text| |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -514,13 +531,42 @@ Valeurs possibles :
    
 |Nom attribut | Définition | Type | Valeurs par défaut |
 |:---|:---|:---|:---|
-|id|Identifiant interne non signifiant|bigint|nextval('lk_spanc_contact_seq'::regclass)|
-|idinstal|Identifiant de l'installation|bigint| |
-|idcontact|Identifiant interne du contact|bigint| |
+|id|Identifiant interne non signifiant|bigint|nextval('lk_erp_localisation_seq'::regclass)|
+|idobjet|Identifiant de l'ERP|bigint| |
+|idloc|Identifiant de la localisation|bigint| |
 
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
+ 
+---
 
-* 1 triggers :
-  * `t_t1_100` : trigger permettant d'insérer toutes les modifications dans la table des logs
+### classes d'objets applicatives métiers (vue) :
+
+  * xapps_an_v_erp_contsecu_periode : Vue applicative formattant l'affichage des derniers contrôles à l'installation (soit le diag initial ou la demande de travaux et le dernier contrôle)
+  * xapps_geo_vmr_erp : Vue applicative générant les exports des contrôles
+  * xapps_geo_vmr_erp_adresse : Vue applicative générant les exports des installations
+  * xapps_geo_vmr_erp_gb : Vue applicative ressortant les indicateurs RPQS pour le tableau de bord n°1 du SPANC
+ 
+### classes d'objets applicatives grands publics sont classés dans le schéma x_apps_public :
+
+Sans objet
+
+### classes d'objets opendata sont classés dans le schéma x_opendata :
+
+Sans objet
+
+## Projet QGIS pour la gestion
+
+Sans objet
+
+## Traitement automatisé mis en place (Workflow de l'ETL FME)
+
+Sans objet
+
+## Export Open Data
+
+Sans objet
+
+
+---
