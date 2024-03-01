@@ -10,7 +10,7 @@ Ensemble des éléments constituant la mise en oeuvre de la base de données des
 
 - Script d'initialisation de la base de données
   * [Suivi des modifications](bdd/ep_00_trace.sql)
-  * [Création  de la structure initiale](bdd/erp_10_squelette.sql)
+  * [Création  de la structure initiale](bdd/erp_00_all.sql)
   * [Création des vues de gestion](bdd/erp_20_vues_gestion.sql)
   * [Création des vues applicatives](bdd/erp_21_vues_xapps.sql)
 
