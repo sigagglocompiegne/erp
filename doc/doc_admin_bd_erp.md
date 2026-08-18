@@ -49,7 +49,44 @@ L'ensemble des classes d'objets de gestion sont stockés dans le schéma `m_erp`
    
 |Nom attribut | Définition | Type | Valeurs par défaut |
 |:---|:---|:---|:---|
-
+| Colonne | Description | Type | Valeur par défaut |
+| :--- | :--- | :--- | :--- |
+| idobjet | Identifiant des objets ERP | integer | nextval('m_erp.an_erp_objet_idobjet_seq'::regclass) |
+| idadresse | Identifiant adresse | bigint |   |
+| refrnb | Réference RNB | character varying(12) |   |
+| refsdis | Réference SDIS | character varying(254) |   |
+| libelle | Libellé des objets ERP | character varying(100) |   |
+| cat | Catégories des objets ERP | character varying(1) | '0'::character varying |
+| erptype | Type des objets ERP | character varying(3) | '00'::character varying |
+| erptype_p | Précision sur le type des objets ERP | character varying(100) |   |
+| erptype2 | Type secondaire des objets ERP | text |   |
+| etat | Etat réel d'ouverture des objets ERP | character varying(2) | '00'::character varying |
+| group | Caractérise le type de groupement de l'ERP | character varying(2) | '00'::character varying |
+| idmaitre | ERP associé au groupement de l'ERP | integer |   |
+| ephemere | Indique si l'ERP est éphémère | boolean | false |
+| eff_public | Effectif public de l'ERP | integer |   |
+| eff_nuit | Effectif nuit de l'ERP | integer |   |
+| eff_pers | Effectif personnel de l'ERP | integer |   |
+| eff_heberg | Effectif hebergement de l'ERP | integer |   |
+| eff_total | Effectif total de l'ERP | integer |   |
+| loc_som | Présence de locaux à sommeil | boolean | false |
+| erp_src | Source de la saisie de l'ERP | character varying(2) | '00'::character varying |
+| erp_public | Identifie l'ERP comme public | boolean | false |
+| siret | SIRET de l'ERP | character varying(14) |   |
+| ouvert_d | Date d'ouverture de l'ERP | date |   |
+| ferme_d | Date de fermeture de l'ERP | date |   |
+| ferme_src | Source de l'information sur la fermeture de l'ERP | character varying(254) |   |
+| observ | Observations diverses | character varying(254) |   |
+| op_sai | Opérateur de saisie de l'objet | character varying(80) |   |
+| op_maj | Opérateur de la dernière mise à jour de l'objet | character varying(80) |   |
+| dbstatut | Statut de l'objet dans la base | character varying(2) | '10'::character varying |
+| dbinsert | Horodatage d'insertion de la donnée dans la base | timestamp without time zone |   |
+| dbupdate | Horodatage de la dernière mise à jour de la donnée dans la base | timestamp without time zone |   |
+| idobjet_enfant | Identifiant de l'objet enfant pour la saisie des relations uniquement (valeur remis à null après enregistrement) | integer |   |
+| complt | Complément de localisation | text |   |
+| eff_autre | Effectif non précisé dans la demande d'autorisation de travaux ou de PC | integer |   |
+| etat_reg | Etat réglementaire des objets ERP (déduit par défaut des évènements). Modification manuelle possible. | character varying(2) | '00'::character varying |
+| etat_manu | Gestion manuelle des états réglementaires | boolean | false |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `idobjet` l'attribution automatique de la référence unique s'effectue via une séquence.
