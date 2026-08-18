@@ -92,31 +92,41 @@ Particularité(s) à noter :
 * Une clé étrangère existe sur la table de valeur `lt_erp_objet_cat_fkey` (lien vers la liste de valeurs des catégories d'ERP `lt_erp_objet_cat`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_objet_erptype_fkey` (lien vers la liste de valeurs des types d'ERP `lt_erp_objet_erptype`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_objet_etat_fkey` (lien vers la liste de valeurs de l'état d'ERP `lt_erp_objet_etat`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_objet_gestion_fkey` (lien vers la liste de valeurs du type de gestion d'ERP `lt_erp_gestion`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_objet_groupement_fkey` (lien vers la liste de valeurs du type de groupement d'ERP `lt_erp_groupement`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_objet_loc_som_fkey` (lien vers la liste de valeurs booleen `lt_booleen`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_group_fkey` (lien vers la liste de valeurs du type de groupement d'ERP `lt_erp_objet_group`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_dbstatut_fkey` (lien vers la liste de valeurs des statuts `r_objet.lt_statut`)
 
 * 2 triggers :
-  * `t_t1_erp_objet` : trigger permettant d'insérer toutes les modifications dans la table ERP
-  * `t_t2_erp_refresh_adresse` : trigger permettant de rafraichir la vue matérialisée `m_erp_stage.xapps_geo_vmr_erp`
+  * `t_t1_dbinsert` : trigger permettant d'insérer une date de saisie
+  * `t_t2_dbupdate` : trigger permettant d'insérer une date de mise à jour
+  * `t_t3_gestion_ctrl` : trigger permettant le contrôle de saisie et la saisie d'attributs automatisé
+  * `t_t4_delete_histo` : trigger after permettant de supprimer les ERP de la table principale se trouvant dans la table historique
+  * `t_t5_resp_unique` : trigger after insert permettant d'associer un responsable unique d'un groupement
+  * `t_t6_etat_reg` : trigger permettant de gérer l'état réglementaire affiché
+  * `t_t7_refresh` : trigger permettant de rafraichir les vues matérialisées
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
 
   ---
 
-`[m_erp].[]` : table alphanumérique contenant les attributs métiers des contrôles d'accessibilité d'un ERP
+`[m_erp].[an_erp_cad]` : table alphanumérique gérant les références cadastrales associés à l'ERP
    
 |Nom attribut | Définition | Type | Valeurs par défaut |
-|:---|:---|:---|:---|
+| :--- | :--- | :--- | :--- |
+| id | Identifiant interne non signifiant pour chaque enregistrement | bigint | nextval('m_erp.an_erp_cad_id_seq'::regclass) |
+| idobjet | Identifiant de l'objet ERP | integer |   |
+| ccosec | Section cadastrale | character varying(2) |   |
+| dnupla | Parcelle cadastrale | character varying(4) |   |
+| dbinsert | Date de saisie | timestamp without time zone |   |
+| dbupdate | Date de mise à jour | timestamp without time zone |   |
 
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
-* Une clé étrangère existe sur la table de valeur `lt_erp_controle_commission_fkey` (lien vers la liste de valeurs des commissions `lt_erp_controle_commission`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_controle_expert_fkey` (lien vers la liste de valeurs des experts `lt_erp_controle_expert`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_controle_avis_exp_fkey` (lien vers la liste de valeurs des conformités `lt_erp_controle_avis`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_controle_avis_com_fkey` (lien vers la liste de valeurs des conformités `lt_erp_controle_avis`)
 
 * 1 triggers :
-  * `t_t3_erp_refresh_adresse` : trigger permettant de rafraichir la vue matérialisée `m_erp_stage.xapps_geo_vmr_erp`
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
+  * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
 
   ---
 
