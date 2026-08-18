@@ -50,7 +50,6 @@ L'ensemble des classes d'objets de gestion sont stockés dans le schéma `m_erp`
 |Nom attribut | Définition | Type | Valeurs par défaut |
 |:---|:---|:---|:---|
 | Colonne | Description | Type | Valeur par défaut |
-| :--- | :--- | :--- | :--- |
 | idobjet | Identifiant des objets ERP | integer | nextval('m_erp.an_erp_objet_idobjet_seq'::regclass) |
 | idadresse | Identifiant adresse | bigint |   |
 | refrnb | Réference RNB | character varying(12) |   |
