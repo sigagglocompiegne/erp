@@ -128,6 +128,97 @@ Particularité(s) à noter :
   * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
   * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
 
+---
+
+`[m_erp].[an_erp_contact]` : table alphanumérique stockant les contacts liés aux ERP
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idcontact | Identifiant du contact | bigint | nextval('m_erp.an_erp_contact_id_seq'::regclass) |
+| denomination | Identité du contact (service, nom/prénom, etc. ) | character varying(254) |   |
+| idorga | Identifiant de l'Organisme d'appartenance du contact | smallint |   |
+| tel | Numéro de téléphone fixe du contact | character varying(10) |   |
+| mobile | Numéro de téléphone mobile du contact | character varying(10) |   |
+| email | Adresse email du contact | character varying(100) |   |
+| observ | Commentaires | character varying(254) |   |
+| dbstatut | Statut de l'objet | character varying(2) | '10'::character varying |
+| op_sai | Opérateur de saisie initiale | character varying(80) |   |
+| op_maj | Opérateur de mise à jour | character varying(80) |   |
+| dbinsert | Date de saisie initiale | timestamp without time zone | now() |
+| dbupdate | Date de mise à jour | timestamp without time zone | now() |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idcontact` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table `an_erp_orga_fkey` (liste des organismes issue de la table `an_erp_orga`)
+* Une clé étrangère existe sur la table de valeur `lt_statut_fkey` (lien vers la liste de valeurs des statuts pour la corbeille `l r_objet.lt_statut`)
+  
+* 4 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
+  * `t_t3_gestion_ctrl` : trigger permettant de contrôler les valeurs insérées
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_evenement]` : table alphanumérique stockant les évènements internes à chaque procédure déclarée à l'ERP
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| ideve | Identifiant interne non signifiant pour chaque évènement | bigint | nextval('m_erp.an_erp_evenement_ideve_seq'::regclass) |
+| idproc | Identifiant de la procédure | integer |   |
+| typ | type d'évènement | character varying(2) |   |
+| deve | date de l'évènement (date de l'avis, de l'arrêté, ...) | date |   |
+| decision | décision lié à l'évènement | character varying(2) |   |
+| op_sai | Opérateur de saisie de l'objet | character varying(80) |   |
+| op_maj | Opérateur de la dernière mise à jour de l'objet | character varying(80) |   |
+| dbinsert | Date de saisie | timestamp without time zone |   |
+| dbupdate | Date de mise à jour | timestamp without time zone |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `ideve` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `lt_erp_eve_decision_fkey` (lien vers la liste de valeurs des décisions `lt_erp_eve_decision`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_eve_eve_fkey` (lien vers la liste de valeurs des évènements `lt_erp_eve`)
+  
+* 4 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
+  * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
+  * `t_t4_etat_reg` :  trigger permettant de gérer l'état réglementaire affiché
+  * `t_t5_delete` :  trigger permettant de supprimer les médias quand un évènement est supprimé
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_evenement]` : table alphanumérique stockant les évènements internes à chaque procédure déclarée à l'ERP
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| ideve | Identifiant interne non signifiant pour chaque évènement | bigint | nextval('m_erp.an_erp_evenement_ideve_seq'::regclass) |
+| idproc | Identifiant de la procédure | integer |   |
+| typ | type d'évènement | character varying(2) |   |
+| deve | date de l'évènement (date de l'avis, de l'arrêté, ...) | date |   |
+| decision | décision lié à l'évènement | character varying(2) |   |
+| op_sai | Opérateur de saisie de l'objet | character varying(80) |   |
+| op_maj | Opérateur de la dernière mise à jour de l'objet | character varying(80) |   |
+| dbinsert | Date de saisie | timestamp without time zone |   |
+| dbupdate | Date de mise à jour | timestamp without time zone |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `ideve` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `lt_erp_eve_decision_fkey` (lien vers la liste de valeurs des décisions `lt_erp_eve_decision`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_eve_eve_fkey` (lien vers la liste de valeurs des évènements `lt_erp_eve`)
+  
+* 4 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
+  * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
+  * `t_t4_etat_reg` :  trigger permettant de gérer l'état réglementaire affiché
+  * `t_t5_delete` :  trigger permettant de supprimer les médias quand un évènement est supprimé
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
   ---
 
 #### Liste de valeurs
