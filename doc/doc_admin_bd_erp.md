@@ -21,6 +21,8 @@ Pour rappel des grands principes :
 
 ## Modèle relationnel simplifié
 
+![spanc_mcd](/bdd/mrs_erp.png)
+
 ## Dépendances
 
 Cette base de données est dépendante de la Base Adresse Locale.
