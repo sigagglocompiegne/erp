@@ -12,14 +12,14 @@ Pour rappel des grands principes :
 
 * le modèle de données et l'application répondent à un besoin de gestion administrative des ERP
 * la localisation des ERP s'appuie sur le référentiel Base Adresse Locale
-* un contrôle est rattachée à un ERP et un seul
 * une adresse peut disposer de n ERP
-* un ERP peut-être partagée par plusieurs adresses
-* l'application permet d'associer des documents
-
+* chaque procédure administrative peut-être rattachée à un ERP (PC, autorisation de travaux, visites)
+* chaque procédure peut être détaillée par des évènements propres (avis de sécurité, d'accessibilité, procès verbal de visite, arrêté d'ouverture, ...)
+* chaque ERP dispose d'un état réel (constaté) et d'un état réglementaire
+  
 ## Schéma fonctionnel
 
-## Modèle relationel simplifié
+## Modèle relationnel simplifié
 
 ## Dépendances
 
