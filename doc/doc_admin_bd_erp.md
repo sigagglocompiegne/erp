@@ -35,12 +35,9 @@ Cette base de données est dépendante de la Base Adresse Locale.
 
 `[m_erp].[xapps_geo_vmr_adresse_erp]` : vue matérialisée géographique partagé avec la Base Adresse Locale permettant la saisie/interrogation des ERP.
 
-|Nom attribut | Définition | Type | Valeurs par défaut |
-|:---|:---|:---|:---|
-
 Particularité(s) à noter :
-* L'attribut `gid` sert de référence unique 
-* Cette vue matérialisée est rafraichie automatiquement à chaque insertion, mise à jour ou suppression d'un ERP ou d'un contrôle.
+* La vue [xapps_geo_vmr_erp] est rafraichie à chaque insertion ou mise à jour.
+* La vue [xapps_geo_vmr_adresse_erp] est rafraichie à chaque insertion ou mise à jour d'une adresse dans la base du même nom.
 
 ## Classes d'objets ERP
 
