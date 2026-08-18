@@ -95,7 +95,7 @@ Particularité(s) à noter :
 * Une clé étrangère existe sur la table de valeur `lt_erp_objet_group_fkey` (lien vers la liste de valeurs du type de groupement d'ERP `lt_erp_objet_group`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_objet_dbstatut_fkey` (lien vers la liste de valeurs des statuts `r_objet.lt_statut`)
 
-* 2 triggers :
+* 8 triggers :
   * `t_t1_dbinsert` : trigger permettant d'insérer une date de saisie
   * `t_t2_dbupdate` : trigger permettant d'insérer une date de mise à jour
   * `t_t3_gestion_ctrl` : trigger permettant le contrôle de saisie et la saisie d'attributs automatisé
@@ -122,7 +122,7 @@ Particularité(s) à noter :
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
 
-* 1 triggers :
+* 4 triggers :
   * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
   * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
   * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
