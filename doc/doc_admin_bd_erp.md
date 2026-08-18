@@ -508,16 +508,14 @@ Particularité(s) à noter :
 * 1 trigger :
   * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
 
-
-
 #### Liste de valeurs
 
-`[m_erp].[lt_erp_ctrl_avis]` : Liste de valeurs des conformités des contrôles d'accessibilité et de sécurité
+`[m_erp].[lt_erp_contact_fonction]` : Liste de valeurs des fonctions des contacts
 
 |Nom attribut | Définition |
 |:---|:---|
-|code|Code des conformités des contrôles|character varying(2)| |
-|valeur|Valeur des conformités de conclusion des contrôles|text| |
+| code | Code de la classe décrivant la fonction | character varying(2) |   |
+| valeur | Valeur de la classe décrivant la fonction | character varying(80) |   |
 
 Particularité(s) à noter :
 * Une clé primaire existe sur le champ code 
@@ -527,12 +525,328 @@ Valeurs possibles :
 |Code|Valeur|
 |:---|:---|
 |00|Non renseigné|
-|10|Défavorable|
-|20|Sursis à statuer|
-|30|Favorable|
-|11|Favorable avec prescription|
+|01|Exploitant|
+|02|Architecte|
+|03|Technicien|
+|04|Responsable unique|
+|99|Autre|
 
 ---
+
+`[m_erp].[lt_erp_eve]` : Liste de valeurs des évènements
+
+|Nom attribut | Définition |
+|:---|:---|
+| code | Code de la classe décrivant le type d'évènements | character varying(2) |   |
+| valeur | Valeur de la classe décrivant le type d'évènement | character varying(80) |   |
+| tri | Attribut permettant de classer les évèvements dans l'ordre d'affichage souhaité dans GEO | smallint |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|10|PC Valant ERP (modificatif)|1|
+|20|Avis du SDIS (sécurité pour 5ème catégorie sans sommeil|4|
+|30|Arrêté d'autorisation de travaux|5|
+|31|Arrêté de refus d'autorisation de travaux|6|
+|32|Arrêté d'autorisation du permis de construire|7|
+|33|Arrêté de refus du permis de construire|8|
+|34|Arrêté d'ouverture|19|
+|35|Arrêté de fermeture administrative provisoire|20|
+|40|RVRAT|9|
+|60|PV de la SCDC (sécurité)|2|
+|61|PV de la SCDA (accessibilité)|3|
+|62|PV de visite périodique|13|
+|63|PV de visite inopinée|14|
+|64|PV de réception de travaux|15|
+|65|PV d'ouverture|16|
+|66|PV de conformité|17|
+|67|PV de réception de travaux/conformité|18|
+
+---
+
+`[m_erp].[lt_erp_eve_decision]` : Liste de valeurs des décisions des évènements
+
+|Nom attribut | Définition |
+|:---|:---|
+| code | Code de la classe décrivant le type de décisions liés à un évènement | character varying(2) |   |
+| valeur | Valeur de la classe décrivant le type de décisions liés à un évènement | character varying(80) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|10|Favorable|
+|11|Favorable (avec prescription)|
+|20|Défavorable|
+|ZZ|Non concerné|
+
+---
+
+`[m_erp].[lt_erp_eve_typdoc]` : Liste de valeurs des types de documents des évènements
+
+|Nom attribut | Définition |
+|:---|:---|
+| code | Code du type de documents joints | character varying(2) |   |
+| valeur | Valeur du type de documents joints | character varying(255) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|10|Arrêté|
+|20|Procès verbal|
+|30|Avis du SDIS|
+|99|Autre (à préciser)|
+
+---
+
+`[m_erp].[lt_erp_objet_cat]` : Liste de valeurs des catégories d'ERP
+
+|Nom attribut | Définition |
+|:---|:---|
+| code | Code de la liste énumérée relative à la catégorie d'un ERP | character varying(1) |   |
+| valeur | Valeur de la liste énumérée relative à la catégorie d'ERP | character varying(20) |   |
+| descrip | Description de la liste énumérée relative à la catégorie d'un ERP | character varying(100) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|1|1|Au dessus de 1500 personnes|
+|2|2|De 701 à 1500 personnes|
+|3|3|De 301 à 700 personnes|
+|4|4|Jusqu'à 300 personnes|
+|5|5|Inférieur aux seuils fixés pour la 5e catégorie|
+
+---
+
+`[m_erp].[lt_erp_objet_erptype]` : Liste de valeurs des types d'ERP
+
+|Nom attribut | Définition |
+|:---|:---|
+| code | Code de la liste énumérée relative au type d'ERP | character varying(3) |   |
+| valeur | Valeur de la liste énumérée relative au type d'ERP | character varying(150) |   |
+| tri | Ordre de tri de la liste énumérée relative au type d'ERP | integer |   |
+| cle | Clé de liste UUID V4 pour le multi-valué permettant une recherche en like | text |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|e4cbbc85-72b9-456d-94fa-1c2928324c3a|
+|CTS|Chapiteaux, tentes et structures|d6e0e679-842c-4d3f-9cd5-e92ff943d04b|
+|EF|Établissements flottants|75c284e8-64e8-4737-b8a9-09e547f4e3dc|
+|GA|Gares|f4b7b317-81f5-4197-b7b4-7b9a27093e8b|
+|J|Structures d'accueil pour personnes âgées et personnes handicapées|f43dbff6-2259-4bba-94fc-e41782b1f1b6|
+|L|Salles d'auditions, de conférences, de réunions, de spectacles ou polyvalentes|7f267c5a-57dc-4ba5-bb18-423b95a40acc|
+|M|Magasins de vente, centres commerciaux|df15a441-cdca-4503-80b0-d60d2b4ede43|
+|N|Restaurants et débits de boissons|44df23e4-bfa1-4c08-af5c-4f3219f6a699|
+|O|Hôtels et pensions de famille|232995ce-9abe-419f-afa6-702b9e92b455|
+|P|Salles de danses et salles de jeux|8b0b17f3-faa8-48d2-9c83-b897c284c82d|
+|PA|Établissements de plein air|01994984-e941-4fed-833e-ef397777ad87|
+|PS|Parcs de stationnement couverts|59ef1825-843d-4df9-a7ff-bc6fe71553a0|
+|R|Établissements d'éveil, d'enseignement, de formation, centres de vacances, centres de loisirs sans hébergement|40b9a616-1efc-4fb9-98b1-c89a90f4333c|
+|S|Bibliothèques, centres de documentation|70019419-a9e2-4589-a401-7c5e6175ef79|
+|SG|Structure gonflable|50db47dd-af8d-421e-b476-a3bdb42a919d|
+|T|Salles d'expositions|f7356e54-9ede-489f-a7c9-5aecaf2f944b|
+|U|Établissements sanitaires|dc71596f-b78a-4b2f-aeee-493c92f51d56|
+|V|Établissement de culte|51335594-fb3f-4177-a5ac-a99feeae4296|
+|W|Administrations, banques, bureaux|bed6a009-7317-41e3-b37b-f198b88605d4|
+|X|Établissements sportifs couverts|8a13ab60-fa35-4030-9fe4-809154d3417a|
+|Y|Musées|eda18498-cdad-4cf8-8507-403414ef2744|
+
+---
+
+`[m_erp].[lt_erp_objet_etat]` : Liste de valeurs des états d'ERP
+
+|Nom attribut | Définition |
+|:---|:---|
+| code | Code de la liste énumérée relative à l'état d'un ERP | character varying(2) |   |
+| valeur | Valeur de la liste énumérée relative à l'état d'un ERP | character varying(30) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|En création|
+|11|Autorisé|
+|20|Ouvert|
+|21|Ouvert (sans autorisation)|
+|22|Ouvert (en attente conformité)|
+|30|Fermé temporairement|
+|31|Fermé|
+|40|Refusé|
+
+---
+
+`[m_erp].[lt_erp_objet_group]` : Liste de valeurs des types de groupements d'ERP
+
+|Nom attribut | Définition |
+| code | Code de la liste énumérée relative à l'appartenance d'un ERP à un groupement | character varying(2) |   |
+| valeur | Valeur de la liste énumérée relative à l'appartenance d'un ERP à un groupement | character varying(30) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|ERP indépendant|
+|20|Membre d'un groupement|
+|30|Maitre d'un groupement|
+
+---
+
+`[m_erp].[lt_erp_objet_media_doctype]` : Liste de valeurs des types de documents des objets ERP
+
+|Nom attribut | Définition |
+| code | Code de la liste énumérée relative au type de document (média) pour les ERP | character varying(2) |   |
+| valeur | Valeur de la liste énumérée relative au type de document (média) pour les ERP | character varying(80) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|10|Courrier|
+|20|Plan|
+|80|Photographie|
+|99|Autre document|
+
+---
+
+`[m_erp].[lt_erp_objet_src]` : Liste de valeurs des sources d'inventaire des ERP
+
+|Nom attribut | Définition |
+| code | Code de la classe décrivant les sources d'idendification de l'ERP | character varying(2) |   |
+| valeur | Valeur de la classe décrivant les sources d'idendification de l'ERP | character varying(80) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|01|Procédure ERP|
+|02|SDIS|
+|03|Service de l'ARC|
+|04|Insee-SIRENE|
+|05|Presse|
+|06|Réseaux sociaux|
+|99|Autre|
+
+---
+
+`[m_erp].[lt_erp_orga_role]` : Liste de valeurs des rôles des organismes
+
+|Nom attribut | Définition |
+| code | Code de la classe décrivant le rôle | character varying(2) |   |
+| valeur | Valeur de la classe décrivant le rôle | character varying(80) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|01|Propriétaire|
+|02|Nu-Propriétaire|
+|03|Exploitant|
+|04|Gestionnaire|
+|99|Autre|
+
+---
+
+`[m_erp].[lt_erp_proc_typdoc]` : Liste de valeurs des types de documents de procédures rattachées aux ERP
+
+|Nom attribut | Définition |
+| code | Code du type de documents joints | character varying(2) |   |
+| valeur | Valeur du type de documents joints | character varying(255) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|10|Permis de construire (PC)|
+|20|Autorisation de travaux (AT)|
+|99|Autre (à préciser)|
+
+---
+
+`[m_erp].[lt_erp_procedure]` : Liste de valeurs des procédures rattachées aux ERP
+
+|Nom attribut | Définition |
+| code | Code de la classe décrivant le type de procédure | character varying(2) |   |
+| valeur | Valeur de la classe décrivant le type de procédure | character varying(80) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|10|Autorisation de travaux|
+|20|PC valant ERP|
+|30|Visite périodique|
+|31|Visite inopinée|
+|99|Autre|
+
+---
+
+`[m_erp].[lt_erp_type_orga]` : Liste de valeurs des types d'organisme
+
+|Nom attribut | Définition |
+| code | Code de la classe décrivant le type d'organisme | character varying(2) |   |
+| valeur | Valeur de la classe décrivant le type d'organisme | character varying(80) |   |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ code 
+
+Valeurs possibles :
+
+|Code|Valeur|
+|:---|:---|
+|00|Non renseigné|
+|01|Etat|
+|02|Région|
+|03|Département|
+|04|Commune|
+|05|Syndicat|
+|06|Association|
+|07|Privé|
 
 ---
 
