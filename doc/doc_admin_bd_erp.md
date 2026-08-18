@@ -27,7 +27,7 @@ Pour rappel des grands principes :
 
 Cette base de données est dépendante de la Base Adresse Locale.
 
-`[x_apps].[x_apps_geo_vmr_adresse]` : table géographique partagé des adresses
+`[r_adresse].[x_apps_geo_vmr_adresse]` : table géographique partagé des adresses
 
 ## Classes d'objets partagé et primitive graphique
 
