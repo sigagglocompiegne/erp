@@ -181,7 +181,7 @@ Particularité(s) à noter :
 * Une clé étrangère existe sur la table de valeur `lt_erp_eve_decision_fkey` (lien vers la liste de valeurs des décisions `lt_erp_eve_decision`)
 * Une clé étrangère existe sur la table de valeur `lt_erp_eve_eve_fkey` (lien vers la liste de valeurs des évènements `lt_erp_eve`)
   
-* 4 triggers :
+* 6 triggers :
   * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
   * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
   * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
@@ -191,35 +191,324 @@ Particularité(s) à noter :
 
 ---
 
-`[m_erp].[an_erp_evenement]` : table alphanumérique stockant les évènements internes à chaque procédure déclarée à l'ERP
+`[m_erp].[an_erp_evenement_media]` : table alphanumérique stockant les médias liés aux évènements
    
 |Nom attribut | Définition | Type | Valeurs par défaut |
 | :--- | :--- | :--- | :--- |
-| ideve | Identifiant interne non signifiant pour chaque évènement | bigint | nextval('m_erp.an_erp_evenement_ideve_seq'::regclass) |
-| idproc | Identifiant de la procédure | integer |   |
-| typ | type d'évènement | character varying(2) |   |
-| deve | date de l'évènement (date de l'avis, de l'arrêté, ...) | date |   |
-| decision | décision lié à l'évènement | character varying(2) |   |
+| id | Identifiant unique du média | bigint | nextval('m_erp.an_erp_evenement_media_id_seq'::regclass) |
+| ideve | Identifiant de l'ERP | bigint |   |
+| media | Champ Média de GEO | text |   |
+| miniature | Champ miniature de GEO | bytea |   |
+| n_fichier | Nom du fichier | text |   |
+| t_fichier | Type de média dans GEO | text |   |
+| doctype | Type de documents | character varying(2) |   |
+| op_sai | Libellé de l'opérateur ayant intégrer le document | character varying(80) |   |
+| dbinsert | Horodatage d'insertion du média dans la base | timestamp without time zone | now() |
+| adoc | Précision sur le type de documents si autre (99) indiqué dans l'attribut doctype | character varying(100) |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `an_erp_evenement_media_typdoc_fkey` (lien vers la liste de valeurs des types de médias `lt_erp_eve_typdoc`)
+
+  
+* 3 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_controle_adoc` : trigger permettant de vérifier la saisie de la précision du document si autre choisit dans type de documents
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_log]` : table alphanumérique stockant les logs de chaque mouvement
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idlog | Identifiant unique | bigint | nextval('m_erp.an_erp_log_idlog_seq'::regclass) |
+| tablename | Nom de la classe concernée par une opération | character varying(80) |   |
+| typeope | Type d'opération | text |   |
+| dataold | Anciennes données | text |   |
+| datanew | Nouvelles données | text |   |
+| dbinsert | Horodatage d'exécution de l'opération | timestamp without time zone | now() |
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idlog` l'attribution automatique de la référence unique s'effectue via une séquence. 
+---
+
+`[m_erp].[an_erp_objet_h]` : table alphanumérique stockant les objets ERP historisé
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idobjet | Identifiant des objets ERP | integer |   |
+| idadresse | Identifiant adresse | bigint |   |
+| refrnb | Réference RNB | character varying(12) |   |
+| refsdis | Réference SDIS | character varying(254) |   |
+| libelle | Libellé des objets ERP | character varying(100) |   |
+| cat | Catégories des objets ERP | character varying(1) | '0'::character varying |
+| erptype | Type des objets ERP | character varying(3) | '00'::character varying |
+| erptype_p | Précision sur le type des objets ERP | character varying(100) |   |
+| erptype2 | Type secondaire des objets ERP | text |   |
+| etat | Etat des objets ERP | character varying(2) | '00'::character varying |
+| group | Caractérise le type de groupement de l'ERP | character varying(2) | '00'::character varying |
+| idmaitre | ERP associé au groupement de l'ERP | bigint |   |
+| ephemere | Indique si l'ERP est éphémère | boolean | false |
+| eff_public | Effectif public de l'ERP | integer |   |
+| eff_nuit | Effectif nuit de l'ERP | integer |   |
+| eff_pers | Effectif personnel de l'ERP | integer |   |
+| eff_heberg | Effectif hebergement de l'ERP | integer |   |
+| eff_total | Effectif total de l'ERP | integer |   |
+| loc_som | Présence de locaux à sommeil | boolean | false |
+| erp_src | Source de la saisie de l'ERP | character varying(2) | '00'::character varying |
+| erp_public | Identifie l'ERP comme public | boolean | false |
+| siret | SIRET de l'ERP | character varying(14) |   |
+| ouvert_d | Date d'ouverture de l'ERP | date |   |
+| ferme_d | Date de fermeture de l'ERP | date |   |
+| ferme_src | Source de l'information sur la fermeture de l'ERP | character varying(254) |   |
+| observ | Observations diverses | character varying(254) |   |
 | op_sai | Opérateur de saisie de l'objet | character varying(80) |   |
 | op_maj | Opérateur de la dernière mise à jour de l'objet | character varying(80) |   |
+| dbstatut | Statut de l'objet dans la base | character varying(2) | '10'::character varying |
+| dbinsert | Horodatage d'insertion de la donnée dans la base | timestamp without time zone |   |
+| dbupdate | Horodatage de la dernière mise à jour de la donnée dans la base | timestamp without time zone |   |
+| dbhisto | Horodatage de la date d'insertion dans la classe historique | timestamp without time zone |   |
+| complt | Complément de localisation | text |   |
+| eff_autre | Effectif non précisé lors d'une autorisaiton de travaux ou d'un PC | integer |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idobjet` 
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_cat_fkey` (lien vers la liste de valeurs des catégories d'ERP `lt_erp_objet_cat`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_erptype_fkey` (lien vers la liste de valeurs des types d'ERP `lt_erp_objet_erptype`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_etat_fkey` (lien vers la liste de valeurs de l'état d'ERP `lt_erp_objet_etat`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_group_fkey` (lien vers la liste de valeurs du type de groupement d'ERP `lt_erp_objet_group`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_objet_dbstatut_fkey` (lien vers la liste de valeurs des statuts `r_objet.lt_statut`)
+  
+* 1 trigger :
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_objet_media]` : table alphanumérique stockant les médias liés aux objets ERP
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| id | Identifiant unique du média | integer | nextval('m_erp.an_erp_objet_media_id_seq'::regclass) |
+| idobjet | Identifiant de l'ERP | bigint |   |
+| media | Champ Média de GEO | text |   |
+| miniature | Champ miniature de GEO | bytea |   |
+| n_fichier | Nom du fichier | text |   |
+| t_fichier | Type de média dans GEO | text |   |
+| doctype | Type de documents | character varying(2) | '00'::character varying |
+| op_sai | Libellé de l'opérateur ayant intégrer le document | character varying(80) |   |
+| doc_sai_d | Date de création du document | date |   |
+| dbinsert | Horodatage d'insertion du média dans la base | timestamp without time zone | now() |
+| adoc | Précision sur le document joint (si 99 saisie dans doctype) | character varying(100) |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `an_erp_evenement_media_typdoc_fkey` (lien vers la liste de valeurs des types de médias `lt_erp_eve_typdoc`)
+
+  
+* 3 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_controle_adoc` : trigger permettant de vérifier la saisie de la précision du document si autre choisit dans type de documents
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_orga]` : table alphanumérique stockant les organismes liés aux ERP
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idorga | Identifiant de l'organisme | integer | nextval('m_erp.an_erp_orga_id_seq'::regclass) |
+| type_orga | Liste de valeurs des types d'organisme (commune, EPCI, syndicat, etc...) | character varying(2) |   |
+| nom_orga | Nom de l'organisme | character varying(254) |   |
+| observ | Commentaires | character varying(254) |   |
+| dbstatut | Statut de l'objet | character varying(2) | '10'::character varying |
+| op_sai | Opérateur de saisie initiale | character varying(80) |   |
+| op_maj | Opérateur de mise à jour | character varying(80) |   |
+| dbinsert | Date de saisie initiale | timestamp without time zone | now() |
+| dbupdate | Date de mise à jour | timestamp without time zone | now() ||
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idorga` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `lt_erp_type_orga_fkey` (lien vers la liste de valeurs des types d'organisme `lt_erp_type_orga`)
+* Une clé étrangère existe sur la table de valeur `lt_statut_fkey` (lien vers la liste de valeurs de statut corbeille `r_objet.lt_statut`)
+
+  
+* 4 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
+  * `t_t3_gestion_ctrl` : trigger permettant de vérifier la saisie et d'automatiser certains attributs
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_procedure]` : table alphanumérique stockant les procédures liés à chaque ERP
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idproc | Identifiant interne non signifiant pour chaque procédure | bigint | nextval('m_erp.an_erp_procedure_idproc_seq'::regclass) |
+| idobjet | Identifiant de l'objet ERP | integer |   |
+| typ | Type de procédure | character varying(2) |   |
+| ident | Numéro éventuel de la procédure | text |   |
+| objet | Objet de la procédure | text |   |
+| ddepot | Date de dépôt de la procédure | date |   |
+| op_sai | Opérateur de saisie | character varying(80) |   |
+| op_maj | Opérateur de mise à jour | character varying(80) |   |
 | dbinsert | Date de saisie | timestamp without time zone |   |
 | dbupdate | Date de mise à jour | timestamp without time zone |   |
 
 
 Particularité(s) à noter :
-* Une clé primaire existe sur le champ `ideve` l'attribution automatique de la référence unique s'effectue via une séquence. 
-* Une clé étrangère existe sur la table de valeur `lt_erp_eve_decision_fkey` (lien vers la liste de valeurs des décisions `lt_erp_eve_decision`)
-* Une clé étrangère existe sur la table de valeur `lt_erp_eve_eve_fkey` (lien vers la liste de valeurs des évènements `lt_erp_eve`)
+* Une clé primaire existe sur le champ `idproc` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `lt_erp_procedure_fkey` (lien vers la liste de valeurs des types de procédures `lt_erp_procedure`)
+
+
   
-* 4 triggers :
+* 5 triggers :
   * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
   * `t_t2_dbupdate` : trigger permettant de saisir la date de mise à jour
-  * `t_t3_controle` : trigger permettant de contrôler les valeurs insérées
-  * `t_t4_etat_reg` :  trigger permettant de gérer l'état réglementaire affiché
-  * `t_t5_delete` :  trigger permettant de supprimer les médias quand un évènement est supprimé
+  * `t_t3_etat_reg` :  trigger permettant de gérer l'état réglementaire affiché
+  * `t_t4_delete` : trigger permettant de supprimer les médias liés à une procédure, ces évènements et les médias des évènements à la suppression d'une procédure
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[an_erp_procedure_media]` : table alphanumérique stockant les médias d'une procédure
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| id | Identifiant unique du média | bigint | nextval('m_erp.an_erp_procedure_media_id_seq'::regclass) |
+| idproc | Identifiant de l'ERP | bigint |   |
+| media | Champ Média de GEO | text |   |
+| miniature | Champ miniature de GEO | bytea |   |
+| n_fichier | Nom du fichier | text |   |
+| t_fichier | Type de média dans GEO | text |   |
+| doctype | Type de documents | character varying(2) |   |
+| op_sai | Libellé de l'opérateur ayant intégrer le document | character varying(80) |   |
+| dbinsert | Horodatage d'insertion du média dans la base | timestamp without time zone | now() |
+| adoc | Précision sur le document joint (si 99 saisie dans doctype) | character varying(100) |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `an_erp_procedure_media_typdoc_fkey` (lien vers la liste de valeurs des types de documents `lt_erp_proc_typdoc`)
+  
+* 3 triggers :
+  * `t_t1_dbinsert` : trigger permettant de saisir la date de saisie
+  * `t_t2_controle_adoc` : trigger permettant de vérifier la saisie de la précision du document si autre choisit dans type de documents
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+### Classes d'objets géographique :
+
+`[m_erp].[geo_erp_userpoint]` : Classe d'objets de localisation utilisateur des ERP (ERP sans adresse correspondant à des ERP temporaires)
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idobjet | Identifiant de l'ERP localisé par un point utilisateur | bigint | nextval('m_erp.an_erp_objet_idobjet_seq'::regclass) |
+| x_l93 | Coordonnée X (Lambert 93) | numeric(9,2) |   |
+| y_l93 | Coordonnée Y (Lambert 93) | numeric(10,2) |   |
+| insee | Code insee de la commune | character varying(5) |   |
+| commune | Nom de la commune | character varying(80) |   |
+| indication | Compléments de localisation | text |   |
+| dbstatut | Statut de l'objet dans la base | character varying(2) | '10'::character varying |
+| geom | Géométrie du point | geometry(Point,2154) |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idobjet` l'attribution automatique de la référence unique s'effectue via une séquence. 
+  
+* 5 triggers :
+  * `t_t1_gestion_ctrl` : trigger permettant de vérifier la saisie utilisateur et d'automatiser certains attributs
+  * `t_t3_xy_l93` : trigger permettant de calculer automatiquement les coordonnées du point de localisation
+  * `t_t4_insee_commune` : trigger permettant de déterminer automatiquement le code insee et le nom de la commune par rapport au point saisie
+  * `t_t5_refresh` : trigger permettant de rafraichir les vues matérialisées
   * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
 
   ---
+`[m_erp].[geo_erp_userpoint_h]` : Classe d'objets de localisation utilisateur des ERP (ERP sans adresse correspondant à des ERP temporaires) - historisation
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idobjet | Identifiant de l'ERP localisé par un point utilisateur | integer |   |
+| x_l93 | Coordonnée X (Lambert 93) | numeric(9,2) |   |
+| y_l93 | Coordonnée Y (Lambert 93) | numeric(10,2) |   |
+| insee | Code insee de la commune | character varying(5) |   |
+| commune | Nom de la commune | character varying(80) |   |
+| indication | Compléments de localisation | text |   |
+| dbstatut | Statut de l'objet dans la base | character varying(2) | '10'::character varying |
+| geom | Géométrie du point | geometry(Point,2154) |   |
+| dbhisto | Horodatage de la date d'insertion dans la classe historique | timestamp without time zone |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idobjet` l'attribution automatique de la référence unique s'effectue via une séquence. 
+  
+* 1 trigger :
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+### Classes d'objets de relation :
+
+`[m_erp].[lk_an_erp_objet_histo]` : Classe d'objets de relation des ERP historisés
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| id | Identifiant de la relation historique | integer | nextval('m_erp.lk_an_erp_objet_histo_id_seq'::regclass) |
+| idobjet_p | Identifiant de l'objet parent | integer |   |
+| idobjet_e | Identifiant de l'objet enfant | integer |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `id` l'attribution automatique de la référence unique s'effectue via une séquence. 
+  
+* 1 trigger :
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[lk_erp_contact]` : Classe d'objets de relation avec des contacts
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idlk | Identifiant unique de la relation | integer | nextval('m_erp.lk_erp_contact_id_seq'::regclass) |
+| idobjet | Identifiant unique de l'objet | integer |   |
+| idcontact | Identifiant unique ndu contact | integer |   |
+| code_fonction | Code dde la fonction du contact | character varying(3) |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idlk` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `an_erp_contact_fkey` (lien vers la table des contacts `an_erp_contact`)
+* Une clé étrangère existe sur la table de valeur `an_erp_objet_fkey` (lien vers la table des objets ERP `an_erp_objet`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_contact_fonction_fkey` (lien vers la liste de valeurs des fonctions des contacts `lt_erp_contact_fonction`)
+
+* 1 trigger :
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+---
+
+`[m_erp].[lk_erp_orga]` : Classe d'objets de relation avec des organismes
+   
+|Nom attribut | Définition | Type | Valeurs par défaut |
+| :--- | :--- | :--- | :--- |
+| idlk | Identifiant unique de la relation | integer | nextval('m_erp.lk_erp_orga_id_seq'::regclass) |
+| idobjet | Identifiant unique de l'objet | integer |   |
+| idorga | Identifiant unique de l'organisme | integer |   |
+| code_role | Code du role de l'organisme | character varying(3) |   |
+
+
+Particularité(s) à noter :
+* Une clé primaire existe sur le champ `idlk` l'attribution automatique de la référence unique s'effectue via une séquence. 
+* Une clé étrangère existe sur la table de valeur `an_erp_objet_fkey` (lien vers la table des objets ERP `an_erp_objet`)
+* Une clé étrangère existe sur la table de valeur `an_erp_orga_fkey` (lien vers la table des organismes `an_erp_orga`)
+* Une clé étrangère existe sur la table de valeur `lt_erp_orga_role_fkey` (lien vers la liste de valeurs des rôles `lt_erp_orga_role`)
+
+* 1 trigger :
+  * `t_t9_log` : trigger permettant d'insérer toutes opérations dans une table de log
+
+
 
 #### Liste de valeurs
 
