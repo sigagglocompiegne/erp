@@ -22,7 +22,7 @@ L’ARC privilégie donc une organisation dans laquelle l’Interface Homme Mach
 De plus cette thématique est partagée dans le cadre de la mutualisation avec la ville de Compiègne. La gestion des ERP fait partie de ce cadre.
 
 ## Voir aussi
-Sans objet
+* [Qu'est-ce qu'un établissement recevant du public (ERP) ?](https://entreprendre.service-public.gouv.fr/vosdroits/F32351)
 
 ## Jeu de données consolidé
 Aucun jeu de données consolidé n'est disponible.
