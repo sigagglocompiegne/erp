@@ -852,8 +852,14 @@ Valeurs possibles :
 
 ### classes d'objets applicatives métiers (vue) :
 
-  * xapps_an_v_erp_contsecu_periode : Vue matérialisée applicative calculant les dates des prochains contrôles à partir des derniers contrôles en fonction de leur nature et de leur conclusion de chaque ERP ouvert (rafraichie après chaque insertion ou mise à jour d'un contrôle)
+  * xapps_geo_vmr_adresse_erp : Vue matérialisée applicative pour le fonctionnel de saisie/interrogation d'ERP à l'adresse dans GEO
+  * xapps_geo_vmr_erp : Vue matérialisée applicative pour la visualisation des ERP à l'adresse et temporaire dans GEO
 
+  * xapps_geo_v_erp_ferme_dispo : Vue listant les ERP par adresse non affecté à un ERP existant.
+  * xapps_geo_v_erp_historise : Vue récursive permettant de récupérer pour chaque objet parent, tous les enfants (pour affichage de l'historique des ERP).
+  * xapps_geo_v_erp_maitre : Vue listant les ERP maitre à l'adresse.
+  * xapps_geo_v_erp_tab1 : Vue applicative du tableau bord pour les chiffres clés des ERP
+  * xapps_geo_v_erp_tab2 : Vue applicative du tableau bord pour le graphique de répartition par typologie des ERP
  
 ### classes d'objets applicatives grands publics sont classés dans le schéma x_apps_public :
 
