@@ -7,7 +7,20 @@
 ![spanc_mcd](/bdd/mrs_erp.png)
 
  
- * **résumé fonctionnel** :
+ ## Résumé fonctionnel
+
+Le modèle de données est composé d'une table principale `an_erp_objet` qui comporte les informations communes ERP et crée l'identifiant unique `idobjet` pour chaque ERP.
+
+Chaque niveau a aussi une table spécifique qui réutilise l'identifiant `id_entite` dans laquelle est stocké les informations spécifique à ce niveau :
+- ERP (à l'adresse) : `an_erp_objet`
+- ERP (fermé) : `an_erp_objet_h`
+- ERP temporaire :  `geo_erp_userpoint`
+- ERP temporaire (fermé) :  `geo_erp_userpoint_h`
+- Procédure : `an_erp_procedure`
+- Evènement : `an_erp_evenement`
+
+Les données extérieures (`médias`, `contacts`...) sont stockées dans des tables extérieures détaillées ci-dessous, elles réutilisent les identifiants des classes parentes.
+
 
 Pour rappel des grands principes :
 
