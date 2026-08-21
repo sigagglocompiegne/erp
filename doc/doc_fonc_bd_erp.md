@@ -23,3 +23,29 @@ graph TD
     C --> F[Événement 2.1]
     C --> G[Événement 2.2]
 ```
+---
+## 2. Les informations transverses liées à un objet ERP
+
+Un objet ERP peut se voir rattacher les objets suivants :
+
+```mermaid
+flowchart TD
+    ENT(("Objet ERP"))
+    ORGA["Organisations<br/>+ role (proprietaire, exploitant...)"]
+    CONTACT["Contacts<br/>+ fonction (exploitant, architecte, technicien, responsable unique, autre)"]
+    FILIATION["Filiation"]
+    MEDIA["Medias<br/>(photos, plans, documents)"]
+    
+    ENT --- ORGA
+    ENT --- CONTACT
+    ENT --- FILIATION
+    ENT --- MEDIA
+```
+
+- **Organisations et rôles** : une même entité peut avoir plusieurs organisations rattachées, chacune avec un rôle (propriétaire, nu-propriétaire, exploitant, autre). Le système empêche d'attribuer deux fois le même rôle à la même organisation sur la même entité.
+- **Contacts** : chaque contact rattaché à une entité a une fonction (direction, gardien, référent sécurité, prestataire...). Même règle d'unicité que pour les organisations.
+- **Fluides / compteurs (PDL)** : [§5 dédié ci-dessous](#5-fluides-et-compteurs-pdl)
+- **Médias** : photos, plans, notices techniques, devis, rapports d'expertise... rattachés librement à une entité.
+- **Adresse** : rattachement au référentiel adresse (RVA).
+
+---
