@@ -11,7 +11,6 @@ Ensemble des éléments constituant la mise en oeuvre de la base de données des
 - Script d'initialisation de la base de données
   * [Suivi des modifications](bdd/ep_00_trace.sql)
   * [Création  de la structure initiale](bdd/erp_00_all.sql)
-
 - [Documentation d'administration de la base](doc/doc_admin_bd_erp.md)
 - [Documentation fonctionnelle](doc/doc_fonc_bd_erp.md)
 
