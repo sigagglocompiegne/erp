@@ -13,6 +13,7 @@ Ensemble des éléments constituant la mise en oeuvre de la base de données des
   * [Création  de la structure initiale](bdd/erp_00_all.sql)
 
 - [Documentation d'administration de la base](doc/doc_admin_bd_erp.md)
+- [Documentation fonctionnelle](doc/doc_fonc_bd_erp.md)
 
 ## Contexte
 L’ARC est engagée dans un plan de modernisation numérique pour l’exercice de ses missions de services publics. L’objectif poursuivi vise à permettre à la collectivité de se doter d’outil d’aide à la décision et d’optimiser l’organisation de ses services. Ces objectifs se déclinent avec la mise en place d’outils informatiques adaptés au quotidien des services et le nécessaire retour auprès de la collectivité, des informations (données) produites et gérées par ses prestataires.
