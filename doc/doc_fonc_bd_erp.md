@@ -92,7 +92,8 @@ flowchart TD
     C -->|PV de réception de travaux/conformité| Y[Avis ?]
     Y -->|Favorable ou Favorable avec prescription| Z[État : ouvert]
     Y -->|Défavorable| AA[État : Ouvert en attente conformité]
-    ```
+```
+
 ---
 ## 4. La corbeille : suppression et restauration
 
