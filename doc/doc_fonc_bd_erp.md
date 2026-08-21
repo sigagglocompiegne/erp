@@ -43,9 +43,8 @@ flowchart TD
 ```
 
 - **Organisations et rôles** : une même entité peut avoir plusieurs organisations rattachées, chacune avec un rôle (propriétaire, nu-propriétaire, exploitant, autre). Le système empêche d'attribuer deux fois le même rôle à la même organisation sur la même entité.
-- **Contacts** : chaque contact rattaché à une entité a une fonction (direction, gardien, référent sécurité, prestataire...). Même règle d'unicité que pour les organisations.
-- **Fluides / compteurs (PDL)** : [§5 dédié ci-dessous](#5-fluides-et-compteurs-pdl)
+- **Contacts** : chaque contact rattaché à une entité a une fonction ((exploitant, architecte, technicien, responsable unique, autre). Même règle d'unicité que pour les organisations.
+- **Filiation** : association particulière, une filiation ne peut s'effectuer uniquement si un ERP est d'abord fermé puis associé au nouvel ERP à la même adresse.
 - **Médias** : photos, plans, notices techniques, devis, rapports d'expertise... rattachés librement à une entité.
-- **Adresse** : rattachement au référentiel adresse (RVA).
 
 ---
