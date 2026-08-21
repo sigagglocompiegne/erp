@@ -69,7 +69,7 @@ flowchart TD
     B -->|Oui| I[Arrêté d'autorisation de travaux]
     B -->|Oui| J[Avis du SDIS sécurité pour 5ème catégorie sans sommeil ou Arrêté de refus d'autorisation de travaux ou Arrêté de fermeture administrative provisoire]
     K --> L{Décision}
-    L -->|Défavorable et état réel ouvert| M[État = Ouvert (sans autorisation)]
+    L -->|Défavorable et état réel ouvert| M[État = Ouvert sans autorisation]
     B -->|Oui| J[Arrêté de refus d'autorisation de travaux]
     B -->|Oui| J[Arrêté de refus d'autorisation de travaux]
 ```
