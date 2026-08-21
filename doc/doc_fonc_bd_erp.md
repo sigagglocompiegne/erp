@@ -117,11 +117,12 @@ graph TD
 Aucune donnée n'est perdue lors d'une première suppression. Cela fonctionne comme une corbeille à deux temps :
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Actif : Creation de l'entite
-    Actif --> Corbeille : 1ere suppression
-    Corbeille --> Actif : Reactivation manuelle
-    Corbeille --> [*] : 2eme suppression = definitive
+graph TD
+    ERP1[ERP 1<br>Ouvert]:::ouvert -->|Affilié à| ERP2[ERP 2<br>Fermé]:::ferme
+    ERP2 -->|Affilié à| ERP3[ERP 3<br>Fermé]
+
+classDef ouvert fill:#90EE90,stroke:#333
+classDef ferme fill:#FF9999,stroke:#333
 ```
 
 - **1ère suppression** : l'entité passe simplement en statut « désactivé » (corbeille). Elle n'apparaît plus dans les vues actives mais toutes ses données restent en base.
