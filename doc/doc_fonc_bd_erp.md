@@ -14,7 +14,7 @@ Les ERP sont organisés en **3 niveaux** :
 | **Evènement** | Classe descriptive des évènements internes à une procédure | non |
 
 Chaque niveau hérite automatiquement de l'**identifiant** du niveau supérieur.
-
+```mermaid
 graph TD
     A[Objet ERP] --> B[Procédure 1]
     A --> C[Procédure 2]
@@ -22,3 +22,4 @@ graph TD
     B --> E[Événement 1.2]
     C --> F[Événement 2.1]
     C --> G[Événement 2.2]
+```
