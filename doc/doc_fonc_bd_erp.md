@@ -70,47 +70,6 @@ flowchart TD
     C -->|RVAT| I[État : en création]
     C -->|PV de sécurité ou accessibilité| J[État : en création]
     C -->|PV de réception de travaux| K[État : en création]
-
-    %% Événements avec sous-conditions
-    C -->|Avis du SDIS| L[Décision ?]
-    L -->|Favorable ou Favorable avec prescription| M[État : autorisé]
-    L -->|Défavorable| N[État : en création]
-
-    C -->|PV de visite| O[Avis ?]
-    O -->|Favorable ou Favorable avec prescription| P[État : ouvert]
-    O -->|Défavorable| Q[État : Ouvert en attente conformité]
-
-    C -->|PV d’ouverture| R[Avis ?]
-    R -->|Favorable ou Favorable avec prescription| S[État : ouvert]
-    R -->|Défavorable| T[État : en création]
-
-    C -->|PV de conformité| U[Avis ?]
-    U -->|Favorable ou Favorable avec prescription| V[État : ouvert]
-    U -->|Défavorable| W[État : Ouvert en attente conformité]
-
-    C -->|PV de réception de travaux/conformité| X[Avis ?]
-    X -->|Favorable ou Favorable avec prescription| Y[État : ouvert]
-    X -->|Défavorable| Z[État : Ouvert en attente conformité]
-
-    %% Cas spécifique : Avis du SDIS OU Arrêté de refus OU Arrêté de fermeture
-    C -->|Avis du SDIS ou Arrêté de refus ou Arrêté de fermeture| AA[Condition ?]
-    AA -->|Avis défavorable OU état réel ouvert| AB[État : ouvert sans autorisation]
-    AA -->|Autre| AC[État : à définir]
-```
-```mermaid
-flowchart TD
-    A[Procédure avec événement ?] -->|Non| B[État : en création]
-    A -->|Oui| C[Quel événement ?]
-
-    %% Événements simples (sans sous-conditions)
-    C -->|PC modificatif Valant ERP| D[État : en création]
-    C -->|Arrêté d'autorisation| E[État : autorisé]
-    C -->|Arrêté de refus| F[État : Refusé]
-    C -->|Arrêté d'ouverture| G[État : ouvert]
-    C -->|Arrêté de fermeture| H[État : Fermé temporairement]
-    C -->|RVAT| I[État : en création]
-    C -->|PV de sécurité ou accessibilité| J[État : en création]
-    C -->|PV de réception de travaux| K[État : en création]
     C -->|Avis du SDIS ou Arrêté de refus ou Arrêté de fermeture| L[État : ouvert sans autorisation]
 
     %% Événements avec sous-conditions
@@ -134,5 +93,22 @@ flowchart TD
     Y -->|Favorable ou Favorable avec prescription| Z[État : ouvert]
     Y -->|Défavorable| AA[État : Ouvert en attente conformité]
     ```
+---
+## 4. La corbeille : suppression et restauration
+
+Aucune donnée n'est perdue lors d'une première suppression. Cela fonctionne comme une corbeille à deux temps :
+
+```mermaid
+stateDiagram-v2
+    [*] --> Actif : Creation de l'entite
+    Actif --> Corbeille : 1ere suppression
+    Corbeille --> Actif : Reactivation manuelle
+    Corbeille --> [*] : 2eme suppression = definitive
+```
+
+- **1ère suppression** : l'entité passe simplement en statut « désactivé » (corbeille). Elle n'apparaît plus dans les vues actives mais toutes ses données restent en base.
+  - **Effet en cascade** : désactiver un site désactive automatiquement tous les sous-sites, bâtiments, UF et locaux compris dans son emprise géographique qui étaient encore actifs. De même avec le fait de désactiver un bâtiment et ses UF et locaux.
+- **Réactivation** : possible depuis la corbeille, à condition que l'entité **parente soit elle-même active** (impossible de réactiver un bâtiment si son site est toujours en corbeille — il faut réactiver le site en premier).
+- **2ème suppression (depuis la corbeille)** : suppression **physique et définitive**. Dans ce cas, toutes les entités filles situées dans l'emprise géographique sont également supprimées définitivement, qu'elles soient actives ou déjà en corbeille.
 
 
