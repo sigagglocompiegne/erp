@@ -61,13 +61,13 @@ flowchart TD
     A[État réglé à Automatique] --> B{Procédure avec événement ?}
     B -->|Non| C[État = En création]
     B -->|Oui| D[PC Valant ERP modificatif] --> C
-    B -->|Oui| E[Avis du SDIS (sécurité pour 5ème catégorie sans sommeil]
+    B -->|Oui| E[Avis du SDIS sécurité pour 5ème catégorie sans sommeil]
     E --> F{Décision}
     F -->|Favorable| G[État = Autorisé]
     F -->|Favorable avec prescription| G
     F -->|Dévafovable| H[État = En création]
     B -->|Oui| I[Arrêté d'autorisation de travaux]
-    B -->|Oui| J[Avis du SDIS (sécurité pour 5ème catégorie sans sommeil ou Arrêté de refus d'autorisation de travaux ou Arrêté de fermeture administrative provisoire]
+    B -->|Oui| J[Avis du SDIS sécurité pour 5ème catégorie sans sommeil ou Arrêté de refus d'autorisation de travaux ou Arrêté de fermeture administrative provisoire]
     B -->|Oui| J[Arrêté de refus d'autorisation de travaux]
 ```
 
