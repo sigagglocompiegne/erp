@@ -97,7 +97,22 @@ flowchart TD
 Dès que le gestionnaire désactive l'état automatique, l'état réglementaire est géré manuellement. Si l'état automatique est réactivé, il est de nouveau définit avec les éléments présents (procédure et évènement) à l'ERP.
 
 ---
-## 4. La corbeille : suppression et restauration
+
+## 4. Les filiations
+
+Elles fonctionnent dès qu'ERP est fermé. Cet état empêche la réouverture de l'ERP. Dans ce cas, il faut recréer l'ERP.
+
+Cet ERP fermé est historisé dans une table historique. La création d'un ERP à la même adresse permet d'accéder à cette classe d'historisation et de sélectionner un ancien ERP à affilié.
+Cette filiation est continue à savoir qu'un ERP fermé, peut-être affilié à un autre ERP fermé qui lui est affilié à un ERP ouvert.
+
+```mermaid
+graph TD
+    ERP1[ERP 1<br>(Ouvert)] -->|Affilié à| ERP2[ERP 2<br>(Fermé)]
+    ERP2 -->|Affilié à| ERP3[ERP 3]
+```
+
+---
+## 5. La corbeille : suppression et restauration
 
 Aucune donnée n'est perdue lors d'une première suppression. Cela fonctionne comme une corbeille à deux temps :
 
