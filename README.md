@@ -19,7 +19,11 @@ L’ARC est engagée dans un plan de modernisation numérique pour l’exercice 
 
 L’ARC privilégie donc une organisation dans laquelle l’Interface Homme Machine (IHM) du métier assure l’alimentation d’un entrepôt de données territoriales. Cette stratégie « agile » permet de répondre au plus près des besoins des services dans une trajectoire soutenable assurant à la fois une bonne maitrise des flux d’information et un temps d’acculturation au sein de l’organisation.
 
-De plus cette thématique est partagée dans le cadre de la mutualisation avec la ville de Compiègne. La gestion des ERP fait partie de ce cadre.
+## Principe
+
+Dans le cadre d'une exigence gouvernementale accrue quant à la gestion des Etablissement Recevant du Public (ERP), la ville de Compiègne décide de renouveler son organisation et, plus particulièrement, sa gestion de l'information vis à vis des contrôles de sécurité et d'accessibilité de ses ERP. Les principaux objectifs de ce projet sont donc : la création et l'entretien d'un référentiel ERP et le développement d'une application web pour le service métier concerné. 
+
+Cette BdD a été conçue à partir des réglementations propres à la ville de Compiègne. Elle est donc adaptée à ses besoins spécifiques, et n'a pas vocation à être un standard valable dans chaque collectivité.
 
 ## Voir aussi
 * [Qu'est-ce qu'un établissement recevant du public (ERP) ?](https://entreprendre.service-public.gouv.fr/vosdroits/F32351)
