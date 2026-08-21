@@ -65,7 +65,7 @@ flowchart TD
     E --> F{Décision}
     F -->|Favorable| G[État = Autorisé]
     F -->|Favorable avec prescription| G
-    F -->|Dévafovable| --> C
+    F -->|Dévafovable| H[État = En création]
 ```
 
 
