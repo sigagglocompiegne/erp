@@ -108,7 +108,7 @@ Cette filiation est continue à savoir qu'un ERP fermé, peut-être affilié à 
 ```mermaid
 graph TD
     ERP1[ERP 1<br>Ouvert] -->|Affilié à| ERP2[ERP 2<br>Fermé]
-    ERP2 -->|Affilié à| ERP3[ERP 3]
+    ERP2 -->|Affilié à| ERP3[ERP 3<br>Fermé]
 ```
 
 ---
