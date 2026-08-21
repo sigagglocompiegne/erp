@@ -11,7 +11,16 @@
 
 Le modèle de données est composé d'une table principale `an_erp_objet` qui comporte les informations communes ERP et crée l'identifiant unique `idobjet` pour chaque ERP.
 
+* le modèle de données et l'application répondent à un besoin de gestion administrative des ERP
+* la localisation des ERP s'appuie sur le référentiel Base Adresse Locale
+* une adresse peut disposer de n ERP
+* chaque procédure administrative peut-être rattachée à un ERP (PC, autorisation de travaux, visites)
+* chaque procédure peut être détaillée par des évènements propres (avis de sécurité, d'accessibilité, procès verbal de visite, arrêté d'ouverture, ...)
+* chaque ERP dispose d'un état réel (constaté) et d'un état réglementaire
+
 Chaque niveau a aussi une table spécifique qui réutilise l'identifiant `id_entite` dans laquelle est stocké les informations spécifique à ce niveau :
+- Adresse (classe de lien avec les classes non géographiques ci-dessous) : `xapps_geo_vmr_adresse_erp`
+  
 - ERP (à l'adresse) : `an_erp_objet`
 - ERP (fermé) : `an_erp_objet_h`
 - ERP temporaire :  `geo_erp_userpoint`
@@ -22,14 +31,7 @@ Chaque niveau a aussi une table spécifique qui réutilise l'identifiant `id_ent
 Les données extérieures (`médias`, `contacts`...) sont stockées dans des tables extérieures détaillées ci-dessous, elles réutilisent les identifiants des classes parentes.
 
 
-Pour rappel des grands principes :
 
-* le modèle de données et l'application répondent à un besoin de gestion administrative des ERP
-* la localisation des ERP s'appuie sur le référentiel Base Adresse Locale
-* une adresse peut disposer de n ERP
-* chaque procédure administrative peut-être rattachée à un ERP (PC, autorisation de travaux, visites)
-* chaque procédure peut être détaillée par des évènements propres (avis de sécurité, d'accessibilité, procès verbal de visite, arrêté d'ouverture, ...)
-* chaque ERP dispose d'un état réel (constaté) et d'un état réglementaire
 
 ## Dépendances
 
