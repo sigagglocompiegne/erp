@@ -2,7 +2,9 @@
 
 # Documentation d'administration de la base de données des ERP (Etablissements Recevants du Public)
 
+## Schéma relationnel
 
+![spanc_mcd](/bdd/mrs_erp.png)
 
  
  * **résumé fonctionnel** :
@@ -15,12 +17,6 @@ Pour rappel des grands principes :
 * chaque procédure administrative peut-être rattachée à un ERP (PC, autorisation de travaux, visites)
 * chaque procédure peut être détaillée par des évènements propres (avis de sécurité, d'accessibilité, procès verbal de visite, arrêté d'ouverture, ...)
 * chaque ERP dispose d'un état réel (constaté) et d'un état réglementaire
-  
-## Schéma fonctionnel
-
-## Modèle relationnel simplifié
-
-![spanc_mcd](/bdd/mrs_erp.png)
 
 ## Dépendances
 
