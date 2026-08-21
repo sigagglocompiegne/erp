@@ -66,6 +66,7 @@ flowchart TD
     F -->|Favorable| G[État = Autorisé]
     F -->|Favorable avec prescription| G
     F -->|Dévafovable| H[État = En création]
+    B -->|Oui| I[Arrêté d'autorisation de travaux]
 ```
 
 
