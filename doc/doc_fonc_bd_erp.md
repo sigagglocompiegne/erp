@@ -94,6 +94,8 @@ flowchart TD
     Y -->|Défavorable| AA[État : Ouvert en attente conformité]
 ```
 
+Dès que le gestionnaire désactive l'état automatique, l'état réglementaire est géré manuellement. Si l'état automatique est réactivé, il est de nouveau définit avec les éléments présents (procédure et évènement) à l'ERP.
+
 ---
 ## 4. La corbeille : suppression et restauration
 
