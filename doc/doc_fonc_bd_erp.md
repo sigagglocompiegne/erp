@@ -61,33 +61,41 @@ flowchart TD
     A[Procédure avec événement ?] -->|Non| B[État : en création]
     A -->|Oui| C[Quel événement ?]
 
+    %% Événements simples (sans sous-conditions)
     C -->|PC modificatif Valant ERP| D[État : en création]
-    C -->|Avis du SDIS| E[Décision ?]
-    E -->|Favorable ou Favorable avec prescription| F[État : autorisé]
-    E -->|Défavorable| G[État : en création]
-    C -->|Arrêté d'autorisation| H[État : autorisé]
-    C -->|Arrêté de refus| I[État : Refusé]
-    C -->|Arrêté d'ouverture| J[État : ouvert]
-    C -->|Arrêté de fermeture| K[État : Fermé temporairement]
+    C -->|Arrêté d'autorisation| E[État : autorisé]
+    C -->|Arrêté de refus| F[État : Refusé]
+    C -->|Arrêté d'ouverture| G[État : ouvert]
+    C -->|Arrêté de fermeture| H[État : Fermé temporairement]
+    C -->|RVAT| I[État : en création]
+    C -->|PV de sécurité ou accessibilité| J[État : en création]
+    C -->|PV de réception de travaux| K[État : en création]
 
-    C -->|Avis du SDIS ou Arrêté de refus ou Arrêté de fermeture| L[Avis ou état réel ?]
-    L -->|Avis défavorable ou état réel ouvert| M[État : ouvert sans autorisation]
+    %% Événements avec sous-conditions
+    C -->|Avis du SDIS| L[Décision ?]
+    L -->|Favorable ou Favorable avec prescription| M[État : autorisé]
+    L -->|Défavorable| N[État : en création]
 
-    C -->|RVAT| N[État : en création]
-    C -->|PV de sécurité ou accessibilité| O[État : en création]
-    C -->|PV de visite| P[Avis ?]
-    P -->|Favorable ou Favorable avec prescription| Q[État : ouvert]
-    P -->|Défavorable| R[État : Ouvert en attente conformité]
-    C -->|PV de réception de travaux| S[État : en création]
-    C -->|PV d’ouverture| T[Avis ?]
-    T -->|Favorable ou Favorable avec prescription| U[État : ouvert]
-    T -->|Défavorable| V[État : en création]
-    C -->|PV de conformité| W[Avis ?]
-    W -->|Favorable ou Favorable avec prescription| X[État : ouvert]
-    W -->|Défavorable| Y[État : Ouvert en attente conformité]
-    C -->|PV de réception de travaux/conformité| Z[Avis ?]
-    Z -->|Favorable ou Favorable avec prescription| AA[État : ouvert]
-    Z -->|Défavorable| AB[État : Ouvert en attente conformité]
+    C -->|PV de visite| O[Avis ?]
+    O -->|Favorable ou Favorable avec prescription| P[État : ouvert]
+    O -->|Défavorable| Q[État : Ouvert en attente conformité]
+
+    C -->|PV d’ouverture| R[Avis ?]
+    R -->|Favorable ou Favorable avec prescription| S[État : ouvert]
+    R -->|Défavorable| T[État : en création]
+
+    C -->|PV de conformité| U[Avis ?]
+    U -->|Favorable ou Favorable avec prescription| V[État : ouvert]
+    U -->|Défavorable| W[État : Ouvert en attente conformité]
+
+    C -->|PV de réception de travaux/conformité| X[Avis ?]
+    X -->|Favorable ou Favorable avec prescription| Y[État : ouvert]
+    X -->|Défavorable| Z[État : Ouvert en attente conformité]
+
+    %% Cas spécifique : Avis du SDIS OU Arrêté de refus OU Arrêté de fermeture
+    C -->|Avis du SDIS ou Arrêté de refus ou Arrêté de fermeture| AA[Condition ?]
+    AA -->|Avis défavorable OU état réel ouvert| AB[État : ouvert sans autorisation]
+    AA -->|Autre| AC[État : à définir]
 ```
 
 
