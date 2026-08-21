@@ -2884,8 +2884,6 @@ $function$
 COMMENT ON FUNCTION m_erp.ft_m_verif_ref_cad() IS 'Fonction trigger vérifiant la saisie des références cadastrales';
 
 -- ################################################################# FUNCTION ft_m_etat_reg ###############################################
-
-
 -- DROP FUNCTION m_erp.ft_m_etat_reg();
 
 CREATE OR REPLACE FUNCTION m_erp.ft_m_etat_reg()
@@ -2902,7 +2900,7 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 	
 	-- si la demande provient de la classe procédure 
 	IF  TG_TABLE_NAME = 'an_erp_procedure' /*OR  TG_TABLE_NAME = 'an_erp_objet'*/  THEN
-	raise EXCEPTION 'ok';
+	
 		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 		alter table m_erp.an_erp_objet disable trigger t_t6_etat_reg;
 		alter table m_erp.an_erp_evenement disable trigger t_t4_etat_reg;
@@ -2972,7 +2970,7 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('63') and req_eve.decision = '20' THEN '22'
 							WHEN req_eve.typ IN ('64') and req_eve.decision in ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('64') and req_eve.decision = '20' THEN '10'
-							WHEN req_eve.typ IN ('65') THEN '20'
+							WHEN req_eve.typ IN ('65') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'
 							WHEN req_eve.typ IN ('66') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('66') and req_eve.decision = '20' THEN '22'
@@ -3067,8 +3065,8 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('63') and req_eve.decision = '20' THEN '22'
 							WHEN req_eve.typ IN ('64') and req_eve.decision in ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('64') and req_eve.decision = '20' THEN '10'
-							WHEN req_eve.typ IN ('65') THEN '20'
-							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'
+							WHEN req_eve.typ IN ('65') and req_eve.decision in ('10','11') THEN '20'
+							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'							
 							WHEN req_eve.typ IN ('66') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('66') and req_eve.decision = '20' THEN '22'
 							WHEN req_eve.typ IN ('67') and req_eve.decision in ('10','11') THEN '20'
@@ -3160,7 +3158,7 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('63') and req_eve.decision = '20' THEN '22'
 							WHEN req_eve.typ IN ('64') and req_eve.decision in ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('64') and req_eve.decision = '20' THEN '10'
-							WHEN req_eve.typ IN ('65') THEN '20'
+							WHEN req_eve.typ IN ('65') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'
 							WHEN req_eve.typ IN ('66') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('66') and req_eve.decision = '20' THEN '22'
@@ -3252,7 +3250,7 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_procedure' THEN
 							WHEN req_eve.typ IN ('63') and req_eve.decision = '20' THEN '22'
 							WHEN req_eve.typ IN ('64') and req_eve.decision in ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('64') and req_eve.decision = '20' THEN '10'
-							WHEN req_eve.typ IN ('65') THEN '20'
+							WHEN req_eve.typ IN ('65') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'
 							WHEN req_eve.typ IN ('66') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('66') and req_eve.decision = '20' THEN '22'
@@ -3285,6 +3283,8 @@ $function$
 ;
 
 COMMENT ON FUNCTION m_erp.ft_m_etat_reg() IS 'Fonction trigger mettant à jour l''attribut etat_reg (état réglementaire) dans la table an_erp_objet';
+
+
 
 
 -- ################################################################# FUNCTION old_ft_m_etat_reg ###############################################
