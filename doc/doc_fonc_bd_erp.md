@@ -40,6 +40,7 @@ flowchart TD
     ENT --- CONTACT
     ENT --- FILIATION
     ENT --- MEDIA
+
 ```
 
 - **Organisations et rôles** : une même entité peut avoir plusieurs organisations rattachées, chacune avec un rôle (propriétaire, nu-propriétaire, exploitant, autre). Le système empêche d'attribuer deux fois le même rôle à la même organisation sur la même entité.
@@ -47,4 +48,24 @@ flowchart TD
 - **Filiation** : association particulière, une filiation ne peut s'effectuer uniquement si un ERP est d'abord fermé puis associé au nouvel ERP à la même adresse.
 - **Médias** : photos, plans, notices techniques, devis, rapports d'expertise... rattachés librement à une entité.
 
+Les classes attributaires des procédures et des évènements ont seulement les informations transverses de type médias.
+
 ---
+
+## 3. Automatismes de saisie
+
+L'essentiel de l'automatisme se situe au niveau de la génération de l'état réglementaire à partir de la saisie des procédures et des évènements.
+
+```mermaid
+flowchart TD
+    A[État réglé à Automatique] --> B{Procédure avec événement ?}
+    B -->|Non| C[État = En création]
+    B -->|Oui| D[Événement = PC Valant ERP modificatif] --> C
+    B -->|Oui| E[Événement = Avis du SDIS]
+    E --> F{Décision}
+    F -->|Favorable| G[État = Autorisé]
+    F -->|Favorable avec prescription| G
+    F -->|Dévafovable| --> C
+```
+
+
