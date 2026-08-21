@@ -58,20 +58,36 @@ L'essentiel de l'automatisme se situe au niveau de la génération de l'état r�
 
 ```mermaid
 flowchart TD
-    A[État réglé à Automatique] --> B{Procédure avec événement ?}
-    B -->|Non| C[État = En création]
-    B -->|Oui| D[PC Valant ERP modificatif] --> C
-    B -->|Oui| E[Avis du SDIS sécurité pour 5ème catégorie sans sommeil]
-    E --> F{Décision}
-    F -->|Favorable| G[État = Autorisé]
-    F -->|Favorable avec prescription| G
-    F -->|Défavorable| H[État = En création]
-    B -->|Oui| I[Arrêté d'autorisation de travaux]
-    B -->|Oui| J[Avis du SDIS Arrêté de refus d'autorisation de travaux Arrêté de fermeture administrative provisoire]
-    K --> L{Décision}
-    F -->|Défavorable et état réel ouvert| M[État = Ouvert sans autorisation]
-    B -->|Oui| J[Arrêté de refus d'autorisation de travaux]
-    B -->|Oui| J[Arrêté de refus d'autorisation de travaux]
+    A[Procédure avec événement ?] -->|Non| B[État : en création]
+    A -->|Oui| C[Quel événement ?]
+
+    C -->|PC modificatif Valant ERP| D[État : en création]
+    C -->|Avis du SDIS| E[Décision ?]
+    E -->|Favorable ou Favorable avec prescription| F[État : autorisé]
+    E -->|Défavorable| G[État : en création]
+    C -->|Arrêté d'autorisation| H[État : autorisé]
+    C -->|Arrêté de refus| I[État : Refusé]
+    C -->|Arrêté d'ouverture| J[État : ouvert]
+    C -->|Arrêté de fermeture| K[État : Fermé temporairement]
+
+    C -->|Avis du SDIS ou Arrêté de refus ou Arrêté de fermeture| L[Avis ou état réel ?]
+    L -->|Avis défavorable ou état réel ouvert| M[État : ouvert sans autorisation]
+
+    C -->|RVAT| N[État : en création]
+    C -->|PV de sécurité ou accessibilité| O[État : en création]
+    C -->|PV de visite| P[Avis ?]
+    P -->|Favorable ou Favorable avec prescription| Q[État : ouvert]
+    P -->|Défavorable| R[État : Ouvert en attente conformité]
+    C -->|PV de réception de travaux| S[État : en création]
+    C -->|PV d’ouverture| T[Avis ?]
+    T -->|Favorable ou Favorable avec prescription| U[État : ouvert]
+    T -->|Défavorable| V[État : en création]
+    C -->|PV de conformité| W[Avis ?]
+    W -->|Favorable ou Favorable avec prescription| X[État : ouvert]
+    W -->|Défavorable| Y[État : Ouvert en attente conformité]
+    C -->|PV de réception de travaux/conformité| Z[Avis ?]
+    Z -->|Favorable ou Favorable avec prescription| AA[État : ouvert]
+    Z -->|Défavorable| AB[État : Ouvert en attente conformité]
 ```
 
 
