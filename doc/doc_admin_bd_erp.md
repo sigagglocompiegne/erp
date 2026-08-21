@@ -9,7 +9,7 @@
  
  ## Résumé fonctionnel
 
-Le modèle de données est composé d'une table principale `an_erp_objet` qui comporte les informations communes ERP et crée l'identifiant unique `idobjet` pour chaque ERP.
+Le modèle de données est composé d'une table principale `an_erp_objet` qui comporte les informations communes ERP et crée l'identifiant unique `idobjet` pour chaque ERP. Cette table est en lien avec la vue matérialisée `xapps_geo_vmr_adresse_erp` dans GEO pour créer le fonctionnelle de consultation des ERP à l'adresse. Nativement, les ERP ne sont pas gérés dans une classe d'objets géographiques. La classe d'objets ERP contient l'`id_adresse` permettant un lien vers la classe d'objets des adresses. Les exports doivent donc prendre en compte se fonctionnement pour récupérer une primitive graphique.
 
 * le modèle de données et l'application répondent à un besoin de gestion administrative des ERP
 * la localisation des ERP s'appuie sur le référentiel Base Adresse Locale
@@ -18,7 +18,7 @@ Le modèle de données est composé d'une table principale `an_erp_objet` qui co
 * chaque procédure peut être détaillée par des évènements propres (avis de sécurité, d'accessibilité, procès verbal de visite, arrêté d'ouverture, ...)
 * chaque ERP dispose d'un état réel (constaté) et d'un état réglementaire
 
-Chaque niveau a aussi une table spécifique qui réutilise l'identifiant `id_entite` dans laquelle est stocké les informations spécifique à ce niveau :
+Chaque niveau a aussi une table spécifique qui réutilise l'identifiant de la classe parente :
 - Adresse (classe de lien avec les classes non géographiques ci-dessous) : `xapps_geo_vmr_adresse_erp`
   
 - ERP (à l'adresse) : `an_erp_objet`
@@ -29,9 +29,6 @@ Chaque niveau a aussi une table spécifique qui réutilise l'identifiant `id_ent
 - Evènement : `an_erp_evenement`
 
 Les données extérieures (`médias`, `contacts`...) sont stockées dans des tables extérieures détaillées ci-dessous, elles réutilisent les identifiants des classes parentes.
-
-
-
 
 ## Dépendances
 
