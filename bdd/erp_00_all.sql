@@ -2884,14 +2884,19 @@ $function$
 COMMENT ON FUNCTION m_erp.ft_m_verif_ref_cad() IS 'Fonction trigger vérifiant la saisie des références cadastrales';
 
 -- ################################################################# FUNCTION ft_m_etat_reg ###############################################
-
+-- DROP FUNCTION m_erp.ft_m_etat_reg();
 
 CREATE OR REPLACE FUNCTION m_erp.ft_m_etat_reg()
  RETURNS trigger
  LANGUAGE plpgsql
 AS $function$
 
+DECLARE v_typ text;
+DECLARE counter INT := 0;
+
 BEGIN
+
+counter := counter + 1;
 
 --RAISE EXCEPTION 'Id : -->%',new.idproc;
 
@@ -2901,6 +2906,9 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 	-- si la demande provient de la classe procédure 
 	IF  TG_TABLE_NAME = 'an_erp_procedure' /*OR  TG_TABLE_NAME = 'an_erp_objet'*/  THEN
 	
+		-- je stocke dans un attribut les évènements et leur décison, si il y a que l'avis du SDIS et un PC accessibilité, je gère sinon je passe dans le case WHEN des étatq réglementaireq
+		v_typ :=  (select string_agg(e.typ || e.decision,',' order by e.deve) from m_erp.an_erp_evenement e where e.idproc = new.idproc); 
+
 		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 		alter table m_erp.an_erp_objet disable trigger t_t6_etat_reg;
 		alter table m_erp.an_erp_evenement disable trigger t_t4_etat_reg;
@@ -2952,7 +2960,11 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 						-- en fonction du type d'évènement (à corriger pour intégrer les décisions)
 						CASE 
 							WHEN req_eve.typ IN ('10') THEN '10'
-							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
+							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('20') and req_eve.decision = '20' THEN '10'
 							WHEN req_eve.typ IN ('30') THEN '11'
 							WHEN req_eve.typ IN ('20','31','35') and req_eve.decision IN ('20','ZZ') and (select etat from m_erp.an_erp_objet where idobjet = req_eve.idobjet) = '20' THEN '21'
@@ -2963,6 +2975,10 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('35') THEN '30'
 							WHEN req_eve.typ IN ('40') THEN '10'
 							WHEN req_eve.typ IN ('60') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
 							WHEN req_eve.typ IN ('61') THEN '10'
 							WHEN req_eve.typ IN ('62') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('62') and req_eve.decision = '20' THEN '22'
@@ -2994,6 +3010,18 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 
 	-- si la demande provient de la classe objet 
 	IF  TG_TABLE_NAME = 'an_erp_objet'  THEN
+
+
+		-- je stocke dans un attribut les évènements et leur décison, si il y a que l'avis du SDIS et un PC accessibilité, je gère sinon je passe dans le case WHEN des étatq réglementaireq
+		v_typ :=  (select string_agg(e.typ || e.decision,',' order by e.deve) from m_erp.an_erp_evenement e where e.idproc = 
+					(
+								 			select 
+												p.idproc
+											from
+												m_erp.an_erp_procedure p where idobjet = NEW.idobjet
+											order by p.ddepot desc
+											limit 1)
+					); 
 
 		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 		alter table m_erp.an_erp_procedure disable trigger t_t3_etat_reg;
@@ -3047,7 +3075,11 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 						-- en fonction du type d'évènement (à corrigert pour intégrer les décisions)
 						CASE 
 							WHEN req_eve.typ IN ('10') THEN '10'
-							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
+							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('20') and req_eve.decision = '20' THEN '10'
 							WHEN req_eve.typ IN ('30') THEN '11'
 							WHEN req_eve.typ IN ('20','31','35') and req_eve.decision IN ('20','ZZ') and (select etat from m_erp.an_erp_objet where idobjet = req_eve.idobjet) = '20' THEN '21'
@@ -3058,6 +3090,10 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('35') THEN '30'
 							WHEN req_eve.typ IN ('40') THEN '10'
 							WHEN req_eve.typ IN ('60') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
 							WHEN req_eve.typ IN ('61') THEN '10'
 							WHEN req_eve.typ IN ('62') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('62') and req_eve.decision = '20' THEN '22'
@@ -3066,7 +3102,7 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('64') and req_eve.decision in ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('64') and req_eve.decision = '20' THEN '10'
 							WHEN req_eve.typ IN ('65') and req_eve.decision in ('10','11') THEN '20'
-							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'							
+							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'
 							WHEN req_eve.typ IN ('66') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('66') and req_eve.decision = '20' THEN '22'
 							WHEN req_eve.typ IN ('67') and req_eve.decision in ('10','11') THEN '20'
@@ -3091,7 +3127,7 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 
 	-- si la demande provient de la classe évènement 
 	 IF TG_TABLE_NAME = 'an_erp_evenement' THEN
-
+	--raise exception 'ok';
 	-- mise à jour de l'attribut aggrégeant les évènements associés
 	-- ici test pour remplacer le champ calculé dans geo par un attribut fixe, mais ne change pas le rafrachissement de l'affichage
 	/*
@@ -3114,6 +3150,14 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 		*/
 		-- si l'état de la réglementation est automatique
 		IF (SELECT o.etat_manu FROM m_erp.an_erp_objet o join m_erp.an_erp_procedure p on o.idobjet = p.idobjet WHERE p.idproc = NEW.idproc) is false THEN
+				--raise exception 'valeur -->%',new.idproc;
+				
+				-- je stocke dans un attribut les évènements et leur décison, si il y a que l'avis du SDIS et un PC accessibilité, je gère sinon je passe dans le case WHEN des étatq réglementaireq
+				v_typ :=  (select string_agg(e.typ || e.decision,',' order by e.deve) from m_erp.an_erp_evenement e where e.idproc = new.idproc); 
+						
+				
+				--RAISE EXCEPTION 'veleur -->%',v_typ;
+				
 				-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 				alter table m_erp.an_erp_objet disable trigger t_t6_etat_reg;
 				alter table m_erp.an_erp_procedure disable trigger t_t3_etat_reg;
@@ -3140,7 +3184,11 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 						-- en fonction du type d'évènement (à corrigert pour intégrer les décisions)
 						CASE 
 							WHEN req_eve.typ IN ('10') THEN '10'
-							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
+							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('20') and req_eve.decision = '20' THEN '10'
 							WHEN req_eve.typ IN ('30') THEN '11'
 							WHEN req_eve.typ IN ('20','31','35') and req_eve.decision IN ('20','ZZ') and (select etat from m_erp.an_erp_objet where idobjet = req_eve.idobjet) = '20' THEN '21'
@@ -3151,6 +3199,10 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							WHEN req_eve.typ IN ('35') THEN '30'
 							WHEN req_eve.typ IN ('40') THEN '10'
 							WHEN req_eve.typ IN ('60') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
 							WHEN req_eve.typ IN ('61') THEN '10'
 							WHEN req_eve.typ IN ('62') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('62') and req_eve.decision = '20' THEN '22'
@@ -3178,6 +3230,9 @@ END IF;
 IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_procedure' THEN
 
 		
+		-- je stocke dans un attribut les évènements et leur décison, si il y a que l'avis du SDIS et un PC accessibilité, je gère sinon je passe dans le case WHEN des étatq réglementaireq
+		v_typ :=  (select string_agg(e.typ || e.decision,',' order by e.deve) from m_erp.an_erp_evenement e where e.idproc = new.idproc); 
+
 		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 		alter table m_erp.an_erp_objet disable trigger t_t6_etat_reg;
 		alter table m_erp.an_erp_evenement disable trigger t_t4_etat_reg;
@@ -3203,7 +3258,7 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_procedure' THEN
 											limit 1)
 						) = 0
 					THEN
-						RAISE EXCEPTION 'delete 1';
+						--RAISE EXCEPTION 'delete 1';
 						-- je mets à jour l'état réglementaire à 10 (En création)					
 						UPDATE m_erp.an_erp_objet SET etat_reg = '10' WHERE idobjet = OLD.idobjet;
 					ELSE
@@ -3231,8 +3286,12 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_procedure' THEN
 						UPDATE m_erp.an_erp_objet SET etat_reg =
 						-- en fonction du type d'évènement (à corrigert pour intégrer les décisions)
 						CASE 
-							WHEN req_eve.typ IN ('10') THEN '10'
-							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
+						WHEN req_eve.typ IN ('10') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
+							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('20') and req_eve.decision = '20' THEN '10'
 							WHEN req_eve.typ IN ('30') THEN '11'
 							WHEN req_eve.typ IN ('20','31','35') and req_eve.decision IN ('20','ZZ') and (select etat from m_erp.an_erp_objet where idobjet = req_eve.idobjet) = '20' THEN '21'
@@ -3243,6 +3302,10 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_procedure' THEN
 							WHEN req_eve.typ IN ('35') THEN '30'
 							WHEN req_eve.typ IN ('40') THEN '10'
 							WHEN req_eve.typ IN ('60') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
 							WHEN req_eve.typ IN ('61') THEN '10'
 							WHEN req_eve.typ IN ('62') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('62') and req_eve.decision = '20' THEN '22'
@@ -3278,11 +3341,20 @@ END IF;
 
 -- si je supprime un évènement
 IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_evenement' THEN
+		--RAISE EXCEPTION 'Valeur -->%', counter;
+		--RAISE EXCEPTION 'valeur -->%',TG_LEVEL;
+		-- je stocke dans un attribut les évènements et leur décison, si il y a que l'avis du SDIS et un PC accessibilité, je gère sinon je passe dans le case WHEN des étatq réglementaireq
+		v_typ :=  (select string_agg(e.typ || e.decision,',' order by e.deve) from m_erp.an_erp_evenement e where e.idproc = new.idproc); 
 
 		--RAISE EXCEPTION 'passe 1 -->%',old.idobjet;
 		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 		alter table m_erp.an_erp_objet disable trigger t_t6_etat_reg;
-		alter table m_erp.an_erp_procedure disable trigger t_t3_etat_reg;
+
+		-- ici si je passe pour la première fois dans la fonction, je désactive le trigger dans la procédure
+		-- si > 0, cela veut dire qu'il y a déjà un delete de passer (à priori quand je supprime une procédure)
+		IF counter = 0 THEN
+			alter table m_erp.an_erp_procedure disable trigger t_t3_etat_reg;
+		END IF;
 
 
 		
@@ -3309,7 +3381,7 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_evenement' THEN
 						-- je mets à jour l'état réglementaire à 10 (En création)					
 						UPDATE m_erp.an_erp_objet SET etat_reg = '10' WHERE idobjet = (select distinct idobjet from m_erp.an_erp_procedure where idproc=old.idproc);
 					ELSE
-				
+					
 					with
 						req_eve as
 						(
@@ -3332,8 +3404,12 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_evenement' THEN
 						UPDATE m_erp.an_erp_objet SET etat_reg =
 						-- en fonction du type d'évènement (à corrigert pour intégrer les décisions)
 						CASE 
-							WHEN req_eve.typ IN ('10') THEN '10'
-							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
+						WHEN req_eve.typ IN ('10') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('20') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
+							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '10'
 							WHEN req_eve.typ IN ('20') and req_eve.decision = '20' THEN '10'
 							WHEN req_eve.typ IN ('30') THEN '11'
 							WHEN req_eve.typ IN ('20','31','35') and req_eve.decision IN ('20','ZZ') and (select etat from m_erp.an_erp_objet where idobjet = req_eve.idobjet) = '20' THEN '21'
@@ -3344,6 +3420,10 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_evenement' THEN
 							WHEN req_eve.typ IN ('35') THEN '30'
 							WHEN req_eve.typ IN ('40') THEN '10'
 							WHEN req_eve.typ IN ('60') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2010,6110' or v_typ = '2011,6111') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '2020,6120' or v_typ = '2010,6120' or v_typ = '2020,6110') THEN '10'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6110,2010' or v_typ = '6111,2011') THEN '11'
+							WHEN req_eve.typ IN ('61') and (v_typ = '6120,2020' or v_typ = '6110,2020' or v_typ = '6120,1010') THEN '10'
 							WHEN req_eve.typ IN ('61') THEN '10'
 							WHEN req_eve.typ IN ('62') and req_eve.decision in ('10','11') THEN '20'
 							WHEN req_eve.typ IN ('62') and req_eve.decision = '20' THEN '22'
@@ -3366,7 +3446,12 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_evenement' THEN
 
 		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
 		alter table m_erp.an_erp_objet enable trigger t_t6_etat_reg;
-		alter table m_erp.an_erp_procedure enable trigger t_t3_etat_reg;
+		
+		-- ici si je passe pour la première fois dans la fonction, je réactive le trigger dans la procédure
+		-- si > 0, cela veut dire qu'il y a déjà un delete de passer (à priori quand je supprime une procédure)
+		IF counter = 0 THEN
+			alter table m_erp.an_erp_procedure enable trigger t_t3_etat_reg;
+		END IF;
 
 
 END IF;
@@ -3379,11 +3464,6 @@ $function$
 
 COMMENT ON FUNCTION m_erp.ft_m_etat_reg() IS 'Fonction trigger mettant à jour l''attribut etat_reg (état réglementaire) dans la table an_erp_objet';
 
--- Permissions
-
-ALTER FUNCTION m_erp.ft_m_etat_reg() OWNER TO sig_create;
-GRANT ALL ON FUNCTION m_erp.ft_m_etat_reg() TO public;
-GRANT ALL ON FUNCTION m_erp.ft_m_etat_reg() TO sig_create;
 
 
 -- ################################################################# FUNCTION old_ft_m_etat_reg ###############################################
