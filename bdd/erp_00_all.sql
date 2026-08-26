@@ -2884,7 +2884,7 @@ $function$
 COMMENT ON FUNCTION m_erp.ft_m_verif_ref_cad() IS 'Fonction trigger vérifiant la saisie des références cadastrales';
 
 -- ################################################################# FUNCTION ft_m_etat_reg ###############################################
--- DROP FUNCTION m_erp.ft_m_etat_reg();
+
 
 CREATE OR REPLACE FUNCTION m_erp.ft_m_etat_reg()
  RETURNS trigger
@@ -2949,7 +2949,7 @@ IF TG_OP ='INSERT' OR TG_OP = 'UPDATE' THEN
 							limit 1
 						)
 						UPDATE m_erp.an_erp_objet SET etat_reg =
-						-- en fonction du type d'évènement (à corrigert pour intégrer les décisions)
+						-- en fonction du type d'évènement (à corriger pour intégrer les décisions)
 						CASE 
 							WHEN req_eve.typ IN ('10') THEN '10'
 							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
@@ -3276,6 +3276,101 @@ IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_procedure' THEN
 END IF;
 
 
+-- si je supprime un évènement
+IF TG_OP = 'DELETE' AND TG_TABLE_NAME = 'an_erp_evenement' THEN
+
+		--RAISE EXCEPTION 'passe 1 -->%',old.idobjet;
+		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
+		alter table m_erp.an_erp_objet disable trigger t_t6_etat_reg;
+		alter table m_erp.an_erp_procedure disable trigger t_t3_etat_reg;
+
+
+		
+		-- si l'état de la réglementation est automatique
+		IF (SELECT DISTINCT o.etat_manu FROM m_erp.an_erp_objet o join m_erp.an_erp_procedure p on o.idobjet = p.idobjet WHERE p.idproc = OLD.idproc) is false THEN
+			-- si aucune procédure enregistrée à l'ERP, etat_reg = Non renseigné
+			
+			--RAISE EXCEPTION 'Table source : -->%',TG_TABLE_NAME;
+			IF EXISTS (SELECT DISTINCT 1 FROM  m_erp.an_erp_objet o join m_erp.an_erp_procedure p on o.idobjet = p.idobjet WHERE p.idproc = OLD.idproc) THEN
+					-- si il existe une procédure (je prends la dernière), et si aucun évènement j'indique un état réglementaire à En création (10)
+					IF (SELECT
+							count(*)
+						from m_erp.an_erp_evenement e 
+						WHERE e.idproc = (
+								 			select 
+												p.idproc
+											from
+												m_erp.an_erp_objet o join m_erp.an_erp_procedure p on o.idobjet = p.idobjet WHERE p.idproc = OLD.idproc
+											order by p.ddepot desc
+											limit 1)
+						) = 0
+					THEN
+						--RAISE EXCEPTION 'delete 1';
+						-- je mets à jour l'état réglementaire à 10 (En création)					
+						UPDATE m_erp.an_erp_objet SET etat_reg = '10' WHERE idobjet = (select distinct idobjet from m_erp.an_erp_procedure where idproc=old.idproc);
+					ELSE
+				
+					with
+						req_eve as
+						(
+						select 
+							e.ideve, p.idproc, p.idobjet, e.typ, e.decision
+						from
+							m_erp.an_erp_evenement e
+						join m_erp.an_erp_procedure p on e.idproc = p.idproc where e.idproc = 
+							(
+							select 
+								p.idproc
+							from
+								m_erp.an_erp_procedure p where idproc = old.idproc
+							order by p.ddepot desc, p.idproc DESC
+							limit 1
+							)
+							order by e.deve desc
+							limit 1
+						)
+						UPDATE m_erp.an_erp_objet SET etat_reg =
+						-- en fonction du type d'évènement (à corrigert pour intégrer les décisions)
+						CASE 
+							WHEN req_eve.typ IN ('10') THEN '10'
+							WHEN req_eve.typ IN ('20') and req_eve.decision IN ('10','11') THEN '11'
+							WHEN req_eve.typ IN ('20') and req_eve.decision = '20' THEN '10'
+							WHEN req_eve.typ IN ('30') THEN '11'
+							WHEN req_eve.typ IN ('20','31','35') and req_eve.decision IN ('20','ZZ') and (select etat from m_erp.an_erp_objet where idobjet = req_eve.idobjet) = '20' THEN '21'
+							WHEN req_eve.typ IN ('31') THEN '40'
+							WHEN req_eve.typ IN ('32') THEN '11'
+							WHEN req_eve.typ IN ('33') THEN '40'
+							WHEN req_eve.typ IN ('34') THEN '20'
+							WHEN req_eve.typ IN ('35') THEN '30'
+							WHEN req_eve.typ IN ('40') THEN '10'
+							WHEN req_eve.typ IN ('60') THEN '10'
+							WHEN req_eve.typ IN ('61') THEN '10'
+							WHEN req_eve.typ IN ('62') and req_eve.decision in ('10','11') THEN '20'
+							WHEN req_eve.typ IN ('62') and req_eve.decision = '20' THEN '22'
+							WHEN req_eve.typ IN ('63') and req_eve.decision in ('10','11') THEN '20'
+							WHEN req_eve.typ IN ('63') and req_eve.decision = '20' THEN '22'
+							WHEN req_eve.typ IN ('64') and req_eve.decision in ('10','11') THEN '10'
+							WHEN req_eve.typ IN ('64') and req_eve.decision = '20' THEN '10'
+							WHEN req_eve.typ IN ('65') and req_eve.decision in ('10','11') THEN '20'
+							WHEN req_eve.typ IN ('65') and req_eve.decision = '20' THEN '11'
+							WHEN req_eve.typ IN ('66') and req_eve.decision in ('10','11') THEN '20'
+							WHEN req_eve.typ IN ('66') and req_eve.decision = '20' THEN '22'
+							WHEN req_eve.typ IN ('67') and req_eve.decision in ('10','11') THEN '20'
+							WHEN req_eve.typ IN ('67') and req_eve.decision = '20' THEN '22'
+							ELSE '00' END
+ 							FROM req_eve WHERE an_erp_objet.idobjet = req_eve.idobjet; 
+						
+		END IF;
+	END IF;
+  END IF;
+
+		-- désactiviation des triggers sur les tables qui seront appelés du fait de l'update induit
+		alter table m_erp.an_erp_objet enable trigger t_t6_etat_reg;
+		alter table m_erp.an_erp_procedure enable trigger t_t3_etat_reg;
+
+
+END IF;
+
 return new;
 
 END;
@@ -3284,7 +3379,11 @@ $function$
 
 COMMENT ON FUNCTION m_erp.ft_m_etat_reg() IS 'Fonction trigger mettant à jour l''attribut etat_reg (état réglementaire) dans la table an_erp_objet';
 
+-- Permissions
 
+ALTER FUNCTION m_erp.ft_m_etat_reg() OWNER TO sig_create;
+GRANT ALL ON FUNCTION m_erp.ft_m_etat_reg() TO public;
+GRANT ALL ON FUNCTION m_erp.ft_m_etat_reg() TO sig_create;
 
 
 -- ################################################################# FUNCTION old_ft_m_etat_reg ###############################################
